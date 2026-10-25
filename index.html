@@ -24,40 +24,42 @@
       padding: 0;
       font-family: 'PingFang TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     body {
-      background: linear-gradient(135deg, #e0f2fe 0%, #fef3c7 100%);
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 16px;
+      padding: 12px;
     }
 
     #game-container {
       width: 100%;
-      max-width: 820px;
+      max-width: 860px;
       background: var(--card-bg);
       border-radius: var(--border-radius);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.14);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
       overflow: hidden;
       display: flex;
       flex-direction: column;
       position: relative;
-      border: 4px solid #fbd38d;
+      border: 4px solid #ecc94b;
     }
 
     /* 頂部狀態列 */
     header {
-      background: #c53030;
+      background: #9b2c2c;
       color: white;
-      padding: 14px 20px;
+      padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      z-index: 10;
     }
 
     .title-banner {
@@ -69,16 +71,16 @@
     }
 
     .header-logo-icon {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
     .stats-bar {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       font-size: 1rem;
       font-weight: bold;
     }
@@ -98,7 +100,7 @@
 
     /* 畫面主區域 */
     .screen {
-      padding: 24px;
+      padding: 20px;
       display: none;
       animation: fadeIn 0.3s ease-in-out;
     }
@@ -116,226 +118,411 @@
     .start-screen {
       text-align: center;
       padding: 30px 20px;
+      background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
     }
 
     .start-hero-container {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 15px;
+      gap: 20px;
       margin-bottom: 16px;
     }
 
     .hero-avatar {
-      width: 140px;
-      height: 140px;
+      width: 130px;
+      height: 130px;
       object-fit: contain;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15));
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.18));
       animation: floatHero 3s ease-in-out infinite alternate;
     }
 
     @keyframes floatHero {
       0% { transform: translateY(0px) rotate(0deg); }
-      100% { transform: translateY(-12px) rotate(3deg); }
+      100% { transform: translateY(-10px) rotate(3deg); }
     }
 
     .game-main-title {
-      font-size: 1.95rem;
+      font-size: 2rem;
       color: #9b2c2c;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .game-subtitle {
       font-size: 1.05rem;
       color: var(--text-muted);
-      margin-bottom: 20px;
-      line-height: 1.6;
+      margin-bottom: 18px;
     }
 
     .story-box {
-      background: #fffaf0;
+      background: #fffdf5;
       border: 2px dashed #dd6b20;
       border-radius: 14px;
-      padding: 18px 20px;
+      padding: 18px 22px;
       text-align: left;
-      font-size: 1.02rem;
+      font-size: 1rem;
       line-height: 1.8;
       margin-bottom: 24px;
       color: #7b341e;
     }
 
-    /* 地圖關卡選單 */
-    .map-header {
-      text-align: center;
-      margin-bottom: 20px;
+    /* 地圖探索介面 (Map Screen) */
+    .map-screen {
+      padding: 16px;
+      background: #f7fafc;
     }
 
-    .map-header h2 {
-      font-size: 1.5rem;
-      color: #742a2a;
-    }
-
-    .levels-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    @media (max-width: 620px) {
-      .levels-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .level-card {
-      border: 3px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 14px 16px;
-      background: #ffffff;
-      cursor: pointer;
-      transition: all 0.25s ease;
+    .map-header-bar {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .map-title {
+      font-size: 1.3rem;
+      color: #742a2a;
+      font-weight: bold;
+    }
+
+    .map-wrapper {
       position: relative;
+      width: 100%;
+      height: 440px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 3px solid #cbd5e0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      background-image: url('images/kinmen_map.jpg');
+      background-size: cover;
+      background-position: center;
     }
 
-    .level-card:hover:not(.locked) {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-      border-color: #dd6b20;
+    /* 地圖迷霧覆蓋層 */
+    .map-overlay-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      pointer-events: none;
     }
 
-    .level-card.locked {
-      background: #edf2f7;
-      opacity: 0.65;
+    /* 連接路線 SVG */
+    .map-paths-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .map-path-line {
+      stroke: #dd6b20;
+      stroke-width: 4;
+      stroke-dasharray: 8, 8;
+      stroke-linecap: round;
+      animation: dashMove 20s linear infinite;
+    }
+
+    @keyframes dashMove {
+      to { stroke-dashoffset: -1000; }
+    }
+
+    /* 地圖關卡據點 */
+    .stage-node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: white;
+      border: 4px solid #dd6b20;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 5;
+    }
+
+    .stage-node:hover:not(.locked) {
+      transform: translate(-50%, -50%) scale(1.18);
+      border-color: #e53e3e;
+      box-shadow: 0 10px 25px rgba(229, 62, 62, 0.5);
+    }
+
+    .stage-node.locked {
+      background: #cbd5e0;
+      border-color: #a0aec0;
       cursor: not-allowed;
-      filter: grayscale(85%);
+      filter: grayscale(100%);
+      opacity: 0.8;
     }
 
-    .level-card.completed {
+    .stage-node.completed {
       border-color: #38a169;
       background: #f0fff4;
     }
 
-    .level-card-img {
-      width: 70px;
-      height: 70px;
+    .stage-node-img {
+      width: 44px;
+      height: 44px;
       object-fit: contain;
-      background: #feebc8;
-      border-radius: 14px;
-      padding: 4px;
-      flex-shrink: 0;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    .level-info h3 {
-      font-size: 1.15rem;
-      color: #2d3748;
-      margin-bottom: 4px;
-    }
-
-    .level-info p {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-    }
-
-    .badge-tag {
+    .stage-node-label {
       position: absolute;
-      top: 10px;
-      right: 12px;
-      font-size: 0.8rem;
+      bottom: -24px;
+      background: rgba(0, 0, 0, 0.78);
+      color: white;
+      font-size: 0.75rem;
       font-weight: bold;
-      color: #38a169;
+      padding: 2px 8px;
+      border-radius: 12px;
+      white-space: nowrap;
+      pointer-events: none;
     }
 
-    /* 關卡閱讀短文與題目 */
-    .stage-header {
+    /* 小勇者走地圖角色 */
+    #hero-map-token {
+      position: absolute;
+      width: 58px;
+      height: 58px;
+      transform: translate(-50%, -85%);
+      transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1), top 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 8;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+    }
+
+    #hero-map-token img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      animation: heroStep 0.4s infinite alternate;
+    }
+
+    @keyframes heroStep {
+      from { transform: translateY(0); }
+      to { transform: translateY(-6px); }
+    }
+
+    /* 戰鬥與題目畫面 (Battle Screen) */
+    .battle-screen {
+      padding: 16px 20px;
+      position: relative;
+    }
+
+    /* RPG 戰鬥舞台區 */
+    .battle-arena {
+      height: 190px;
+      background: linear-gradient(180deg, #bbf2f6 0%, #fef3c7 65%, #c6f6d5 100%);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #edf2f7;
-      padding-bottom: 12px;
-      margin-bottom: 16px;
+      align-items: flex-end;
+      padding: 16px 40px;
+      border: 3px solid #cbd5e0;
+      margin-bottom: 14px;
+      box-shadow: inset 0 -10px 20px rgba(0,0,0,0.06);
     }
 
-    .stage-title {
-      font-size: 1.25rem;
-      color: #9b2c2c;
-      font-weight: bold;
-    }
-
-    .reading-card-container {
+    /* 戰鬥角色容器 */
+    .combatant {
       display: flex;
-      gap: 18px;
-      align-items: flex-start;
-      background: #fffdf5;
-      border-left: 5px solid #dd6b20;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transition: all 0.2s ease;
+      z-index: 3;
     }
 
-    .stage-visual-img {
-      width: 120px;
-      height: 120px;
+    .combatant-img {
+      width: 105px;
+      height: 105px;
       object-fit: contain;
-      flex-shrink: 0;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12));
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2));
     }
 
-    @media (max-width: 580px) {
-      .reading-card-container {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-      .reading-text {
-        text-align: left;
-      }
-    }
-
-    .reading-content-box {
-      flex: 1;
-    }
-
-    .reading-title {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #c05621;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .reading-text {
-      font-size: 1.02rem;
-      line-height: 1.8;
-      color: #4a5568;
-    }
-
-    .question-card {
-      background: #f7fafc;
-      border-radius: 14px;
-      padding: 20px;
-      border: 1px solid #e2e8f0;
-      margin-bottom: 16px;
-    }
-
-    .q-step {
-      font-size: 0.88rem;
-      color: #dd6b20;
-      font-weight: bold;
+    /* 戰鬥血條與名稱 */
+    .combatant-bar-box {
+      width: 110px;
+      background: rgba(0,0,0,0.65);
+      border-radius: 12px;
+      padding: 4px 8px;
+      text-align: center;
       margin-bottom: 6px;
     }
 
-    .q-text {
-      font-size: 1.14rem;
+    .combatant-name {
+      color: white;
+      font-size: 0.78rem;
       font-weight: bold;
-      margin-bottom: 16px;
+      margin-bottom: 3px;
+    }
+
+    .hp-track {
+      width: 100%;
+      height: 8px;
+      background: #4a5568;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .hp-fill {
+      height: 100%;
+      background: #48bb78;
+      transition: width 0.3s ease;
+    }
+
+    .hp-fill.danger {
+      background: #e53e3e;
+    }
+
+    /* 攻擊動作動畫 */
+    .hero-attack {
+      animation: heroSlash 0.4s ease-in-out;
+    }
+
+    @keyframes heroSlash {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(120px) scale(1.15); }
+      100% { transform: translateX(0); }
+    }
+
+    .monster-attack {
+      animation: monsterBite 0.4s ease-in-out;
+    }
+
+    @keyframes monsterBite {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(-120px) scale(1.15); }
+      100% { transform: translateX(0); }
+    }
+
+    .monster-hit {
+      animation: monsterHurt 0.5s ease;
+    }
+
+    @keyframes monsterHurt {
+      0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+      20%, 60% { filter: brightness(3) saturate(0.2) drop-shadow(0 0 20px #ff3838); transform: translateX(10px); }
+      40%, 80% { transform: translateX(-10px); }
+    }
+
+    .monster-die {
+      animation: monsterFaint 0.8s forwards;
+    }
+
+    @keyframes monsterFaint {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3) rotate(20deg); filter: brightness(4); opacity: 0.8; }
+      100% { transform: scale(0.2) translateY(50px); opacity: 0; }
+    }
+
+    /* 聲光效果覆蓋層 */
+    #fx-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .screen-shake {
+      animation: shake 0.35s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-3px, 0, 0); }
+      20%, 80% { transform: translate3d(5px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+
+    .screen-flash-red {
+      animation: flashRed 0.4s ease-out;
+    }
+
+    @keyframes flashRed {
+      0% { background: rgba(229, 62, 62, 0.4); }
+      100% { background: transparent; }
+    }
+
+    /* 飄字傷害特效 (Floating Damage Text) */
+    .dmg-popup {
+      position: absolute;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #ff3838;
+      text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 8px rgba(0,0,0,0.4);
+      pointer-events: none;
+      animation: floatUpFade 0.8s ease-out forwards;
+      z-index: 30;
+    }
+
+    @keyframes floatUpFade {
+      0% { transform: translateY(0) scale(0.8); opacity: 0; }
+      30% { transform: translateY(-20px) scale(1.3); opacity: 1; }
+      100% { transform: translateY(-55px) scale(1); opacity: 0; }
+    }
+
+    /* 閱讀理解折疊卡 */
+    .reading-collapse {
+      background: #fffdf5;
+      border-left: 5px solid #dd6b20;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .reading-header {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #c05621;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .reading-body {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #4a5568;
+      margin-top: 8px;
+    }
+
+    /* 戰鬥題目卡片 */
+    .question-card {
+      background: #f7fafc;
+      border-radius: 14px;
+      padding: 16px 20px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 14px;
+    }
+
+    .q-step {
+      font-size: 0.85rem;
+      color: #dd6b20;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .q-text {
+      font-size: 1.08rem;
+      font-weight: bold;
+      margin-bottom: 14px;
       color: #1a202c;
       line-height: 1.5;
     }
@@ -347,11 +534,11 @@
     }
 
     .opt-btn {
-      padding: 14px 18px;
+      padding: 12px 16px;
       border: 2px solid #cbd5e0;
       background: white;
       border-radius: 12px;
-      font-size: 1rem;
+      font-size: 0.98rem;
       text-align: left;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -381,11 +568,11 @@
     }
 
     .feedback-box {
-      margin-top: 14px;
-      padding: 12px 16px;
+      margin-top: 12px;
+      padding: 10px 14px;
       border-radius: 10px;
       display: none;
-      font-size: 0.96rem;
+      font-size: 0.94rem;
       line-height: 1.5;
       animation: fadeIn 0.2s ease;
     }
@@ -404,10 +591,10 @@
       border-left: 4px solid #f98080;
     }
 
-    /* 按鈕 */
+    /* 按鈕樣式 */
     .btn {
-      padding: 14px 28px;
-      font-size: 1.05rem;
+      padding: 12px 24px;
+      font-size: 1.02rem;
       font-weight: bold;
       border: none;
       border-radius: 12px;
@@ -443,14 +630,14 @@
       width: 100%;
     }
 
-    /* 彈出視窗 */
+    /* 通關 / 失敗彈窗 */
     .modal-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.7);
       display: none;
       justify-content: center;
       align-items: center;
@@ -466,39 +653,34 @@
     .modal-card {
       background: white;
       border-radius: 22px;
-      padding: 30px;
+      padding: 28px;
       text-align: center;
       max-width: 480px;
       width: 100%;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     }
 
     .modal-img-reward {
       width: 130px;
       height: 130px;
       object-fit: contain;
-      margin: 0 auto 14px auto;
+      margin: 0 auto 12px auto;
       display: block;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.18));
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));
+      animation: floatHero 2s infinite alternate;
     }
 
     .modal-title {
       font-size: 1.55rem;
       color: #742a2a;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .modal-desc {
-      font-size: 1rem;
+      font-size: 0.98rem;
       color: #4a5568;
       line-height: 1.6;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .collected-badge-preview {
@@ -507,22 +689,24 @@
       gap: 10px;
       background: #fefcbf;
       border: 2px solid #ecc94b;
-      padding: 10px 18px;
+      padding: 8px 18px;
       border-radius: 30px;
       font-weight: bold;
       color: #744210;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
 
   <div id="game-container">
+    <div id="fx-overlay"></div>
+
     <!-- 頂部狀態列 -->
     <header>
       <div class="title-banner">
-        <img src="images/wind_lion.png" alt="風獅爺" class="header-logo-icon">
-        <span>金門尋寶大冒險</span>
+        <img src="images/hero.png" alt="小勇者" class="header-logo-icon">
+        <span>金門尋寶大冒險：風之島</span>
       </div>
       <div class="stats-bar">
         <div>體力：<span class="hearts" id="heart-display">❤️❤️❤️</span></div>
@@ -530,73 +714,129 @@
       </div>
     </header>
 
-    <!-- 1. 遊戲首頁開始畫面 -->
+    <!-- 1. 遊戲開始首頁 -->
     <div id="screen-start" class="screen active start-screen">
       <div class="start-hero-container">
-        <img src="images/wind_lion.png" alt="風獅爺守護神" class="hero-avatar">
-        <img src="images/otter.png" alt="歐亞水獺" class="hero-avatar" style="animation-delay: -1.5s;">
+        <img src="images/hero.png" alt="冒險小勇者" class="hero-avatar">
+        <img src="images/wind_lion.png" alt="風獅爺守護神" class="hero-avatar" style="animation-delay: -1.5s;">
       </div>
       <h1 class="game-main-title">風之島的秘密守護者</h1>
-      <p class="game-subtitle">適合國小三年級學童自學 ✕ 閱讀理解 ✕ 在地文化探索</p>
+      <p class="game-subtitle">在地文化閱讀冒險 ✕ RPG 探索大地圖打怪遊戲</p>
 
       <div class="story-box">
         <strong>📜 冒險任務信：</strong><br>
         親愛的小勇者！你翻開了古老的《浯島密卷》，被傳送到了被稱為「海中仙洲」的<strong>金門</strong>。<br>
-        島上的守護神器「御風靈珠」碎成了四塊散落各地，狂風四起！請透過閱讀島民留下的文化線索，通過考驗找回靈珠，平息狂風，成為真正的「金門守護小英雄」！
+        島上的守護神器「御風靈珠」碎成四塊散落各地，狂風與怪物四處作亂！請在金門冒險大地圖上移動探索，透過認真閱讀線索答題擊潰怪物，找回靈珠平息狂風！
       </div>
 
-      <button class="btn btn-primary" onclick="startGame()">⚔️ 出發冒險！進入島嶼地圖</button>
+      <button class="btn btn-primary" onclick="initAudioAndStart()">⚔️ 出發！進入金門冒險大地圖</button>
     </div>
 
-    <!-- 2. 地圖選關畫面 -->
-    <div id="screen-map" class="screen">
-      <div class="map-header">
-        <h2>🗺️ 金門冒險地圖</h2>
-        <p style="color: #718096; font-size: 0.95rem; margin-top: 4px;">請依序探索四大村落與景點，解開閱讀謎題！</p>
+    <!-- 2. 金門冒險大地圖畫面 (Map Screen) -->
+    <div id="screen-map" class="screen map-screen">
+      <div class="map-header-bar">
+        <div class="map-title">🗺️ 金門冒險大地圖</div>
+        <span style="font-size: 0.9rem; color: #4a5568;">點選解鎖據點，小勇者就會走過去喔！</span>
       </div>
 
-      <div class="levels-grid" id="levels-grid">
-        <!-- 動態產生關卡卡片 -->
-      </div>
+      <div class="map-wrapper" id="map-wrapper">
+        <div class="map-overlay-layer"></div>
 
-      <div style="text-align: center; margin-top: 10px;">
-        <button class="btn btn-secondary" onclick="showStoryAgain()">📖 重溫任務背景</button>
-      </div>
-    </div>
+        <!-- 路線虛線 SVG -->
+        <svg class="map-paths-svg" viewBox="0 0 800 440" preserveAspectRatio="none">
+          <path d="M 620 180 Q 420 160 220 280 T 360 380 T 560 300" fill="none" class="map-path-line" />
+        </svg>
 
-    <!-- 3. 關卡閱讀與答題畫面 -->
-    <div id="screen-stage" class="screen">
-      <div class="stage-header">
-        <div class="stage-title" id="stage-title">關卡名稱</div>
-        <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.9rem;" onclick="backToMap()">↩️ 回地圖</button>
-      </div>
+        <!-- 關卡 1：瓊林村 (東北方金沙/金湖交界) -->
+        <div class="stage-node" id="node-0" style="left: 68%; top: 38%;" onclick="walkToStage(0)">
+          <img src="images/wind_lion.png" alt="瓊林村" class="stage-node-img">
+          <div class="stage-node-label">1. 瓊林村 (風獅爺)</div>
+        </div>
 
-      <!-- 閱讀短文與 AI 視覺插圖區塊 -->
-      <div class="reading-card-container">
-        <img id="stage-visual-img" src="" alt="關卡插圖" class="stage-visual-img">
-        <div class="reading-content-box">
-          <div class="reading-title" id="reading-title">📜 閱讀線索</div>
-          <div class="reading-text" id="reading-text">文本內容</div>
+        <!-- 關卡 2：水頭聚落 (西南方金城) -->
+        <div class="stage-node locked" id="node-1" style="left: 26%; top: 62%;" onclick="walkToStage(1)">
+          <img src="images/minnan_house.png" alt="水頭聚落" class="stage-node-img">
+          <div class="stage-node-label">2. 水頭古厝 (得月樓)</div>
+        </div>
+
+        <!-- 關卡 3：翟山坑道 (南方海岸) -->
+        <div class="stage-node locked" id="node-2" style="left: 44%; top: 82%;" onclick="walkToStage(2)">
+          <img src="images/zhaishan_tunnel.png" alt="翟山坑道" class="stage-node-img">
+          <div class="stage-node-label">3. 翟山坑道 (密道)</div>
+        </div>
+
+        <!-- 關卡 4：太武山與烈嶼 (中央與生態區) -->
+        <div class="stage-node locked" id="node-3" style="left: 70%; top: 66%;" onclick="walkToStage(3)">
+          <img src="images/otter.png" alt="太武山生態" class="stage-node-img">
+          <div class="stage-node-label">4. 太武山 (歐亞水獺)</div>
+        </div>
+
+        <!-- 小勇者在地圖上的角色 Token -->
+        <div id="hero-map-token" style="left: 68%; top: 38%;">
+          <img src="images/hero.png" alt="小勇者">
         </div>
       </div>
 
-      <!-- 當前題目區塊 -->
+      <div style="text-align: center; margin-top: 12px;">
+        <button class="btn btn-secondary" onclick="showStoryAgain()">📖 重新閱讀冒險故事</button>
+      </div>
+    </div>
+
+    <!-- 3. RPG 戰鬥與閱讀答題畫面 (Battle Screen) -->
+    <div id="screen-battle" class="screen battle-screen">
+      <!-- 戰鬥舞台區 -->
+      <div class="battle-arena" id="battle-arena">
+        <!-- 玩家小勇者 -->
+        <div class="combatant" id="hero-combatant">
+          <div class="combatant-bar-box">
+            <div class="combatant-name">小勇者 (玩家)</div>
+            <div class="hp-track">
+              <div class="hp-fill" id="player-hp-bar" style="width: 100%;"></div>
+            </div>
+          </div>
+          <img src="images/hero.png" alt="勇者" class="combatant-img" id="hero-combat-img">
+        </div>
+
+        <!-- 關卡怪物 (答對扣怪血量) -->
+        <div class="combatant" id="monster-combatant">
+          <div class="combatant-bar-box">
+            <div class="combatant-name" id="monster-name">風沙怪</div>
+            <div class="hp-track">
+              <div class="hp-fill danger" id="monster-hp-bar" style="width: 100%;"></div>
+            </div>
+          </div>
+          <img src="images/wind_lion.png" alt="怪物" class="combatant-img" id="monster-combat-img">
+        </div>
+      </div>
+
+      <!-- 閱讀線索 (折疊卡) -->
+      <div class="reading-collapse">
+        <div class="reading-header" onclick="toggleReading()">
+          <span id="reading-badge-title">📜 戰鬥情報線索：點擊展開閱讀</span>
+          <span id="reading-toggle-icon">🔽</span>
+        </div>
+        <div class="reading-body" id="reading-content-body">
+          文本內容
+        </div>
+      </div>
+
+      <!-- 戰鬥題目卡片 -->
       <div class="question-card">
-        <div class="q-step" id="q-step">第 1 / 3 題</div>
-        <div class="q-text" id="q-text">問題描述</div>
+        <div class="q-step" id="q-step">第 1 / 3 回合</div>
+        <div class="q-text" id="q-text">問題內容</div>
         <div class="options-list" id="options-list">
           <!-- 選項按鈕 -->
         </div>
         <div class="feedback-box" id="feedback-box"></div>
       </div>
 
-      <button class="btn btn-primary btn-block" id="next-q-btn" style="display: none;" onclick="nextQuestion()">➡️ 下一題</button>
+      <button class="btn btn-primary btn-block" id="next-q-btn" style="display: none;" onclick="nextQuestion()">➡️ 繼續挑戰下一回合</button>
     </div>
 
-    <!-- 通關/失敗彈出視窗 -->
+    <!-- 通關 / 失敗彈出視窗 -->
     <div id="modal-overlay" class="modal-overlay">
       <div class="modal-card">
-        <img id="modal-img" src="" alt="成就獎勵" class="modal-img-reward">
+        <img id="modal-img" src="images/hero.png" alt="成就" class="modal-img-reward">
         <h3 class="modal-title" id="modal-title">關卡通過！</h3>
         <div class="modal-desc" id="modal-desc">說明文字</div>
         <div id="modal-badge-container"></div>
@@ -607,13 +847,111 @@
   </div>
 
   <script>
-    // 遊戲關卡資料庫（包含繪製之去背 PNG 圖片）
+    // Web Audio API 音效生成器 (無須載入外部 MP3，零延遲)
+    const SoundFX = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      // 揮劍砍擊音效
+      slash() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.exponentialRampToValueAtTime(100, now + 0.18);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.18);
+      },
+      // 爆擊命中怪物音效
+      hit() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(40, now + 0.25);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      },
+      // 玩家答錯受傷音效
+      hurt() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(120, now);
+        osc.frequency.exponentialRampToValueAtTime(50, now + 0.3);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      },
+      // 怪物擊敗消散音效
+      monsterDefeated() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [200, 300, 450, 600].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.25, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.2);
+        });
+      },
+      // 通關勝利號角音效
+      victory() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const notes = [261.6, 329.6, 392.0, 523.3]; // C E G C
+        notes.forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.3, now + i * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.12 + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.12);
+          osc.stop(now + i * 0.12 + 0.35);
+        });
+      }
+    };
+
+    // 關卡與怪物資料
     const gameData = [
       {
         id: 0,
         title: "第一關：瓊林村——風獅爺的怒吼",
-        shortTitle: "瓊林聚落",
-        image: "images/wind_lion.png",
+        nodePos: { left: "68%", top: "38%" },
+        monsterName: "呼嘯風沙巨靈",
+        monsterImage: "images/wind_lion.png",
         badgeName: "東方風靈珠 (風獅爺披風)",
         reading: {
           title: "〈穿披風的石獅子〉",
@@ -661,8 +999,9 @@
       {
         id: 1,
         title: "第二關：水頭聚落——古厝與落番洋樓",
-        shortTitle: "水頭聚落",
-        image: "images/minnan_house.png",
+        nodePos: { left: "26%", top: "62%" },
+        monsterName: "海盜暗影土匪",
+        monsterImage: "images/minnan_house.png",
         badgeName: "南方磚靈珠 (紅磚燕尾積木)",
         reading: {
           title: "〈屋頂上的剪刀與燕子〉",
@@ -710,8 +1049,9 @@
       {
         id: 2,
         title: "第三關：翟山坑道——地底的花崗岩密道",
-        shortTitle: "翟山坑道",
-        image: "images/zhaishan_tunnel.png",
+        nodePos: { left: "44%", top: "82%" },
+        monsterName: "花崗岩石巨兵",
+        monsterImage: "images/zhaishan_tunnel.png",
         badgeName: "西方鋼靈珠 (砲彈鋼刀徽章)",
         reading: {
           title: "〈鬼斧神工的地下水路〉",
@@ -759,8 +1099,9 @@
       {
         id: 3,
         title: "第四關：太武山與烈嶼——生態之友與島嶼美味",
-        shortTitle: "太武山生態",
-        image: "images/otter.png",
+        nodePos: { left: "70%", top: "66%" },
+        monsterName: "泥沼污染惡魔",
+        monsterImage: "images/otter.png",
         badgeName: "北方生靈珠 (歐亞水獺守護印記)",
         reading: {
           title: "〈森林小溪的神秘客與貢糖〉",
@@ -815,10 +1156,26 @@
     let currentQuestionIndex = 0;
     let modalAction = "map";
 
+    // 初始化
     window.onload = function() {
       updateStatsUI();
-      renderMapGrid();
+      updateMapNodes();
     };
+
+    function initAudioAndStart() {
+      SoundFX.init();
+      showScreen("screen-map");
+      updateMapNodes();
+    }
+
+    function showStoryAgain() {
+      showScreen("screen-start");
+    }
+
+    function showScreen(screenId) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById(screenId).classList.add("active");
+    }
 
     function updateStatsUI() {
       const heartEl = document.getElementById("heart-display");
@@ -831,84 +1188,90 @@
 
       const completedCount = completedLevels.filter(Boolean).length;
       badgeEl.innerText = `靈珠：${completedCount}/4`;
+
+      // 玩家戰鬥血條
+      const playerHpBar = document.getElementById("player-hp-bar");
+      if (playerHpBar) {
+        playerHpBar.style.width = `${(currentLives / 3) * 100}%`;
+        if (currentLives <= 1) playerHpBar.classList.add("danger");
+        else playerHpBar.classList.remove("danger");
+      }
     }
 
-    function showScreen(screenId) {
-      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-      document.getElementById(screenId).classList.add("active");
-    }
-
-    function startGame() {
-      showScreen("screen-map");
-      renderMapGrid();
-    }
-
-    function showStoryAgain() {
-      showScreen("screen-start");
-    }
-
-    function backToMap() {
-      showScreen("screen-map");
-      renderMapGrid();
-    }
-
-    function renderMapGrid() {
-      const grid = document.getElementById("levels-grid");
-      grid.innerHTML = "";
-
+    function updateMapNodes() {
       gameData.forEach((lvl, idx) => {
+        const node = document.getElementById(`node-${idx}`);
+        if (!node) return;
         const isLocked = idx > unlockedLevel;
         const isDone = completedLevels[idx];
 
-        const card = document.createElement("div");
-        card.className = `level-card ${isLocked ? 'locked' : ''} ${isDone ? 'completed' : ''}`;
-        
-        let statusBadge = "";
-        if (isDone) {
-          statusBadge = `<span class="badge-tag">✅ 已解鎖靈珠</span>`;
-        } else if (isLocked) {
-          statusBadge = `<span class="badge-tag" style="color: #a0aec0;">🔒 未解鎖</span>`;
-        } else {
-          statusBadge = `<span class="badge-tag" style="color: #dd6b20;">⚡ 挑戰中</span>`;
-        }
-
-        card.innerHTML = `
-          <img src="${lvl.image}" alt="${lvl.shortTitle}" class="level-card-img">
-          <div class="level-info">
-            <h3>${lvl.shortTitle}</h3>
-            <p>${lvl.reading.title}</p>
-          </div>
-          ${statusBadge}
-        `;
-
-        if (!isLocked) {
-          card.onclick = () => startStage(idx);
-        }
-
-        grid.appendChild(card);
+        node.className = `stage-node ${isLocked ? 'locked' : ''} ${isDone ? 'completed' : ''}`;
       });
     }
 
-    function startStage(levelIdx) {
+    // 玩家在地圖上走向關卡據點
+    function walkToStage(levelIdx) {
+      if (levelIdx > unlockedLevel) {
+        SoundFX.hurt();
+        return;
+      }
+
+      SoundFX.init();
+      const targetPos = gameData[levelIdx].nodePos;
+      const heroToken = document.getElementById("hero-map-token");
+
+      heroToken.style.left = targetPos.left;
+      heroToken.style.top = targetPos.top;
+
+      // 走動延遲後進入戰鬥舞台
+      setTimeout(() => {
+        startBattle(levelIdx);
+      }, 750);
+    }
+
+    function startBattle(levelIdx) {
       currentLevelIndex = levelIdx;
       currentQuestionIndex = 0;
 
       const stage = gameData[levelIdx];
-      document.getElementById("stage-title").innerText = stage.title;
-      document.getElementById("stage-visual-img").src = stage.image;
-      document.getElementById("stage-visual-img").alt = stage.shortTitle;
-      document.getElementById("reading-title").innerText = `📜 閱讀線索：${stage.reading.title}`;
-      document.getElementById("reading-text").innerHTML = stage.reading.text;
+      document.getElementById("monster-name").innerText = stage.monsterName;
+      document.getElementById("monster-combat-img").src = stage.monsterImage;
+      document.getElementById("reading-badge-title").innerHTML = `📜 閱讀情報：${stage.reading.title}`;
+      document.getElementById("reading-content-body").innerHTML = stage.reading.text;
 
-      showScreen("screen-stage");
+      // 重設怪物造型與血量
+      const monsterImg = document.getElementById("monster-combat-img");
+      monsterImg.className = "combatant-img";
+      updateMonsterHp();
+
+      showScreen("screen-battle");
       renderQuestion();
+    }
+
+    function updateMonsterHp() {
+      const stage = gameData[currentLevelIndex];
+      const remainingQuestions = stage.questions.length - currentQuestionIndex;
+      const pct = (remainingQuestions / stage.questions.length) * 100;
+      document.getElementById("monster-hp-bar").style.width = `${pct}%`;
+    }
+
+    function toggleReading() {
+      const body = document.getElementById("reading-content-body");
+      const icon = document.getElementById("reading-toggle-icon");
+      if (body.style.display === "none") {
+        body.style.display = "block";
+        icon.innerText = "🔼";
+      } else {
+        body.style.display = "none";
+        icon.innerText = "🔽";
+      }
     }
 
     function renderQuestion() {
       const stage = gameData[currentLevelIndex];
       const qData = stage.questions[currentQuestionIndex];
 
-      document.getElementById("q-step").innerText = `${qData.tag} 第 ${currentQuestionIndex + 1} / ${stage.questions.length} 題`;
+      document.getElementById("q-step").innerText = `${qData.tag} 第 ${currentQuestionIndex + 1} / ${stage.questions.length} 回合`;
       document.getElementById("q-text").innerText = qData.q;
 
       const optsContainer = document.getElementById("options-list");
@@ -931,6 +1294,33 @@
       });
     }
 
+    function triggerScreenShake() {
+      const container = document.getElementById("game-container");
+      container.classList.add("screen-shake");
+      setTimeout(() => container.classList.remove("screen-shake"), 350);
+    }
+
+    function triggerScreenFlash() {
+      const fx = document.getElementById("fx-overlay");
+      fx.classList.add("screen-flash-red");
+      setTimeout(() => fx.classList.remove("screen-flash-red"), 400);
+    }
+
+    function createDamagePopup(text, isMonster) {
+      const target = isMonster ? document.getElementById("monster-combatant") : document.getElementById("hero-combatant");
+      const rect = target.getBoundingClientRect();
+      const containerRect = document.getElementById("game-container").getBoundingClientRect();
+
+      const popup = document.createElement("div");
+      popup.className = "dmg-popup";
+      popup.innerText = text;
+      popup.style.left = `${rect.left - containerRect.left + 20}px`;
+      popup.style.top = `${rect.top - containerRect.top + 10}px`;
+
+      document.getElementById("game-container").appendChild(popup);
+      setTimeout(() => popup.remove(), 800);
+    }
+
     function handleAnswer(selectedIdx, clickedBtn) {
       const stage = gameData[currentLevelIndex];
       const qData = stage.questions[currentQuestionIndex];
@@ -941,39 +1331,79 @@
       allBtns.forEach(btn => btn.disabled = true);
 
       if (selectedIdx === qData.ans) {
+        // 玩家答對：勇者突進砍怪！
         clickedBtn.classList.add("correct");
+
+        // 聲光效果
+        SoundFX.slash();
+        const heroImg = document.getElementById("hero-combat-img");
+        const monsterImg = document.getElementById("monster-combat-img");
+
+        heroImg.classList.add("hero-attack");
+        setTimeout(() => {
+          heroImg.classList.remove("hero-attack");
+          SoundFX.hit();
+          triggerScreenShake();
+          monsterImg.classList.add("monster-hit");
+          createDamagePopup("💥 暴擊 -100 HP", true);
+          setTimeout(() => monsterImg.classList.remove("monster-hit"), 500);
+
+          // 扣除怪物血量
+          const remaining = stage.questions.length - (currentQuestionIndex + 1);
+          document.getElementById("monster-hp-bar").style.width = `${(remaining / stage.questions.length) * 100}%`;
+
+          // 如果打倒最後一隻怪
+          if (remaining === 0) {
+            setTimeout(() => {
+              SoundFX.monsterDefeated();
+              monsterImg.classList.add("monster-die");
+            }, 300);
+          }
+        }, 200);
+
         feedback.className = "feedback-box correct";
-        feedback.innerHTML = `<strong>🎉 答對了！</strong> ${qData.explain}`;
+        feedback.innerHTML = `<strong>🎉 命中弱點！答對了！</strong> ${qData.explain}`;
         feedback.style.display = "block";
 
         if (currentQuestionIndex + 1 < stage.questions.length) {
-          nextBtn.innerText = "➡️ 答對了！進入下一題";
+          nextBtn.innerText = "⚔️ 擊中怪物！進入下一回合";
         } else {
-          nextBtn.innerText = "🏆 通過考驗！解鎖本關靈珠";
+          nextBtn.innerText = "🏆 怪物消滅！解鎖本區御風靈珠";
         }
         nextBtn.style.display = "block";
       } else {
+        // 玩家答錯：怪物反擊！
         clickedBtn.classList.add("wrong");
         allBtns[qData.ans].classList.add("correct");
 
-        currentLives--;
-        updateStatsUI();
+        const monsterImg = document.getElementById("monster-combat-img");
+        const heroImg = document.getElementById("hero-combat-img");
+
+        monsterImg.classList.add("monster-attack");
+        setTimeout(() => {
+          monsterImg.classList.remove("monster-attack");
+          SoundFX.hurt();
+          triggerScreenShake();
+          triggerScreenFlash();
+          createDamagePopup("💔 玩家受傷 -1", false);
+
+          currentLives--;
+          updateStatsUI();
+
+          if (currentLives <= 0) {
+            setTimeout(() => showGameOverModal(), 800);
+            return;
+          }
+        }, 200);
 
         feedback.className = "feedback-box wrong";
-        feedback.innerHTML = `<strong>💔 哎呀！答錯了！</strong> 扣除 1 顆體力！<br>${qData.explain}`;
+        feedback.innerHTML = `<strong>哎呀！被怪物反擊了！</strong> 體力扣除 1 顆！<br>${qData.explain}`;
         feedback.style.display = "block";
 
-        if (currentLives <= 0) {
-          setTimeout(() => {
-            showGameOverModal();
-          }, 1200);
-          return;
-        }
-
         if (currentQuestionIndex + 1 < stage.questions.length) {
-          nextBtn.innerText = "➡️ 繼續答下一題";
+          nextBtn.innerText = "🛡️ 重新整隊！繼續迎戰下一回合";
         } else {
-          nextBtn.innerText = "🏆 通過考驗！解鎖本關靈珠";
+          nextBtn.innerText = "🏆 堅持到底！解鎖本區御風靈珠";
         }
         nextBtn.style.display = "block";
       }
@@ -991,11 +1421,13 @@
     }
 
     function completeStage() {
+      SoundFX.victory();
       completedLevels[currentLevelIndex] = true;
       if (currentLevelIndex + 1 > unlockedLevel && unlockedLevel < 3) {
         unlockedLevel = currentLevelIndex + 1;
       }
       updateStatsUI();
+      updateMapNodes();
 
       const stage = gameData[currentLevelIndex];
       const isAllCompleted = completedLevels.every(Boolean);
@@ -1007,26 +1439,26 @@
       const modalBtn = document.getElementById("modal-btn");
 
       if (isAllCompleted) {
-        modalImg.src = "images/wind_lion.png";
-        modalTitle.innerText = "🎉 傳奇達成！金門守護大英雄！";
-        modalDesc.innerHTML = "恭喜你！成功找回了四枚御風靈珠！島上的狂風已經平息，風獅爺與水獺們露出了微笑。<br>你已經徹底掌握了金門的建築、信仰、戰地與生態知識，成為優秀的文化守護者！";
+        modalImg.src = "images/hero.png";
+        modalTitle.innerText = "👑 傳奇達成！金門守護大英雄！";
+        modalDesc.innerHTML = "恭喜你！成功擊潰所有作亂的怪物，找回了四枚御風靈珠！<br>島上的狂風已經平息，風獅爺們露出了欣慰的微笑。<br>你已經徹底掌握了金門的建築、信仰、戰地與生態知識！";
         badgeBox.innerHTML = `
           <div class="collected-badge-preview">
-            <span>✨ 獲得稱號：浯島名譽守護使者 🎖️</span>
+            <span>✨ 獲得封號：浯島名譽守護使者 🎖️</span>
           </div>
         `;
         modalBtn.innerText = "🌟 重新遊玩挑戰";
         modalAction = "restart";
       } else {
-        modalImg.src = stage.image;
-        modalTitle.innerText = `恭喜通過【${stage.shortTitle}】！`;
-        modalDesc.innerHTML = `你透過認真閱讀文字與思考，成功擊敗了阻礙你的考驗！`;
+        modalImg.src = stage.monsterImage;
+        modalTitle.innerText = `戰勝【${stage.monsterName}】！`;
+        modalDesc.innerHTML = `小勇者透過智慧與閱讀，成功擊破了怪物的阻礙，平息了該區域的風暴！`;
         badgeBox.innerHTML = `
           <div class="collected-badge-preview">
-            <span>✨ 獲得神物：${stage.badgeName}</span>
+            <span>✨ 獲得神器：${stage.badgeName}</span>
           </div>
         `;
-        modalBtn.innerText = "🗺️ 前往下一關冒險";
+        modalBtn.innerText = "🗺️ 前往下一個地圖據點";
         modalAction = "map";
       }
 
@@ -1040,11 +1472,11 @@
       const badgeBox = document.getElementById("modal-badge-container");
       const modalBtn = document.getElementById("modal-btn");
 
-      modalImg.src = "images/wind_lion.png";
+      modalImg.src = "images/hero.png";
       modalTitle.innerText = "體力耗盡！";
-      modalDesc.innerHTML = "小勇者的體力（金門貢糖）吃完了！別灰心，先休息一下，再重新閱讀一次文章線索吧！";
+      modalDesc.innerHTML = "小勇者的體力（金門貢糖）吃完了！別灰心，先休息一下，重新研讀戰鬥情報吧！";
       badgeBox.innerHTML = "";
-      modalBtn.innerText = "🔄 補充體力，重新挑戰本關";
+      modalBtn.innerText = "🔄 補充體力，重新挑戰本關怪物";
       modalAction = "retry";
 
       document.getElementById("modal-overlay").classList.add("active");
@@ -1054,16 +1486,17 @@
       document.getElementById("modal-overlay").classList.remove("active");
 
       if (modalAction === "map") {
-        backToMap();
+        showScreen("screen-map");
       } else if (modalAction === "retry") {
         currentLives = 3;
         updateStatsUI();
-        startStage(currentLevelIndex);
+        startBattle(currentLevelIndex);
       } else if (modalAction === "restart") {
         currentLives = 3;
         unlockedLevel = 0;
         completedLevels = [false, false, false, false];
         updateStatsUI();
+        updateMapNodes();
         showScreen("screen-start");
       }
     }
