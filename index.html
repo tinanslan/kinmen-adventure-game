@@ -15,7 +15,7 @@
       --text-muted: #718096;
       --success: #28a745;
       --danger: #dc3545;
-      --border-radius: 18px;
+      --border-radius: 20px;
     }
 
     * {
@@ -38,10 +38,10 @@
 
     #game-container {
       width: 100%;
-      max-width: 780px;
+      max-width: 820px;
       background: var(--card-bg);
       border-radius: var(--border-radius);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.14);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -65,7 +65,14 @@
       font-weight: bold;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+    }
+
+    .header-logo-icon {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     }
 
     .stats-bar {
@@ -84,7 +91,7 @@
 
     .badges-collected {
       background: rgba(255, 255, 255, 0.2);
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 20px;
       font-size: 0.9rem;
     }
@@ -108,30 +115,40 @@
     /* 首頁開始畫面 */
     .start-screen {
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px 20px;
     }
 
-    .start-hero {
-      font-size: 4.5rem;
-      margin-bottom: 12px;
-      animation: bounce 2s infinite;
+    .start-hero-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 16px;
     }
 
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    .hero-avatar {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15));
+      animation: floatHero 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatHero {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-12px) rotate(3deg); }
     }
 
     .game-main-title {
-      font-size: 1.85rem;
+      font-size: 1.95rem;
       color: #9b2c2c;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .game-subtitle {
       font-size: 1.05rem;
       color: var(--text-muted);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       line-height: 1.6;
     }
 
@@ -139,11 +156,11 @@
       background: #fffaf0;
       border: 2px dashed #dd6b20;
       border-radius: 14px;
-      padding: 18px;
+      padding: 18px 20px;
       text-align: left;
       font-size: 1.02rem;
-      line-height: 1.7;
-      margin-bottom: 28px;
+      line-height: 1.8;
+      margin-bottom: 24px;
       color: #7b341e;
     }
 
@@ -154,7 +171,7 @@
     }
 
     .map-header h2 {
-      font-size: 1.45rem;
+      font-size: 1.5rem;
       color: #742a2a;
     }
 
@@ -165,7 +182,7 @@
       margin-bottom: 20px;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 620px) {
       .levels-grid {
         grid-template-columns: 1fr;
       }
@@ -174,19 +191,19 @@
     .level-card {
       border: 3px solid #e2e8f0;
       border-radius: 16px;
-      padding: 16px;
+      padding: 14px 16px;
       background: #ffffff;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       position: relative;
     }
 
     .level-card:hover:not(.locked) {
       transform: translateY(-4px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
       border-color: #dd6b20;
     }
 
@@ -194,7 +211,7 @@
       background: #edf2f7;
       opacity: 0.65;
       cursor: not-allowed;
-      filter: grayscale(80%);
+      filter: grayscale(85%);
     }
 
     .level-card.completed {
@@ -202,25 +219,25 @@
       background: #f0fff4;
     }
 
-    .level-icon {
-      font-size: 2.4rem;
-      width: 54px;
-      height: 54px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .level-card-img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
       background: #feebc8;
-      border-radius: 50%;
+      border-radius: 14px;
+      padding: 4px;
+      flex-shrink: 0;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     }
 
     .level-info h3 {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: #2d3748;
       margin-bottom: 4px;
     }
 
     .level-info p {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
     }
 
@@ -249,17 +266,43 @@
       font-weight: bold;
     }
 
-    .reading-box {
+    .reading-card-container {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
       background: #fffdf5;
       border-left: 5px solid #dd6b20;
-      border-radius: 8px;
+      border-radius: 12px;
       padding: 16px 20px;
-      margin-bottom: 22px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .stage-visual-img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12));
+    }
+
+    @media (max-width: 580px) {
+      .reading-card-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .reading-text {
+        text-align: left;
+      }
+    }
+
+    .reading-content-box {
+      flex: 1;
     }
 
     .reading-title {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: bold;
       color: #c05621;
       margin-bottom: 8px;
@@ -283,14 +326,14 @@
     }
 
     .q-step {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       color: #dd6b20;
       font-weight: bold;
       margin-bottom: 6px;
     }
 
     .q-text {
-      font-size: 1.12rem;
+      font-size: 1.14rem;
       font-weight: bold;
       margin-bottom: 16px;
       color: #1a202c;
@@ -342,7 +385,7 @@
       padding: 12px 16px;
       border-radius: 10px;
       display: none;
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       line-height: 1.5;
       animation: fadeIn 0.2s ease;
     }
@@ -361,7 +404,7 @@
       border-left: 4px solid #f98080;
     }
 
-    /* 通用按鈕 */
+    /* 按鈕 */
     .btn {
       padding: 14px 28px;
       font-size: 1.05rem;
@@ -400,7 +443,7 @@
       width: 100%;
     }
 
-    /* 結算通關/失敗畫面 */
+    /* 彈出視窗 */
     .modal-overlay {
       position: absolute;
       top: 0;
@@ -422,17 +465,27 @@
 
     .modal-card {
       background: white;
-      border-radius: 20px;
-      padding: 28px;
+      border-radius: 22px;
+      padding: 30px;
       text-align: center;
-      max-width: 460px;
+      max-width: 480px;
       width: 100%;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
 
-    .modal-icon {
-      font-size: 4rem;
-      margin-bottom: 12px;
+    .modal-img-reward {
+      width: 130px;
+      height: 130px;
+      object-fit: contain;
+      margin: 0 auto 14px auto;
+      display: block;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.18));
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
 
     .modal-title {
@@ -445,7 +498,7 @@
       font-size: 1rem;
       color: #4a5568;
       line-height: 1.6;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .collected-badge-preview {
@@ -458,7 +511,7 @@
       border-radius: 30px;
       font-weight: bold;
       color: #744210;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
   </style>
 </head>
@@ -468,7 +521,8 @@
     <!-- 頂部狀態列 -->
     <header>
       <div class="title-banner">
-        <span>🦁</span> 金門尋寶大冒險
+        <img src="images/wind_lion.png" alt="風獅爺" class="header-logo-icon">
+        <span>金門尋寶大冒險</span>
       </div>
       <div class="stats-bar">
         <div>體力：<span class="hearts" id="heart-display">❤️❤️❤️</span></div>
@@ -478,7 +532,10 @@
 
     <!-- 1. 遊戲首頁開始畫面 -->
     <div id="screen-start" class="screen active start-screen">
-      <div class="start-hero">🌪️🏛️🦁</div>
+      <div class="start-hero-container">
+        <img src="images/wind_lion.png" alt="風獅爺守護神" class="hero-avatar">
+        <img src="images/otter.png" alt="歐亞水獺" class="hero-avatar" style="animation-delay: -1.5s;">
+      </div>
       <h1 class="game-main-title">風之島的秘密守護者</h1>
       <p class="game-subtitle">適合國小三年級學童自學 ✕ 閱讀理解 ✕ 在地文化探索</p>
 
@@ -514,10 +571,13 @@
         <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.9rem;" onclick="backToMap()">↩️ 回地圖</button>
       </div>
 
-      <!-- 閱讀短文區塊 -->
-      <div class="reading-box">
-        <div class="reading-title" id="reading-title">📜 閱讀線索</div>
-        <div class="reading-text" id="reading-text">文本內容</div>
+      <!-- 閱讀短文與 AI 視覺插圖區塊 -->
+      <div class="reading-card-container">
+        <img id="stage-visual-img" src="" alt="關卡插圖" class="stage-visual-img">
+        <div class="reading-content-box">
+          <div class="reading-title" id="reading-title">📜 閱讀線索</div>
+          <div class="reading-text" id="reading-text">文本內容</div>
+        </div>
       </div>
 
       <!-- 當前題目區塊 -->
@@ -536,7 +596,7 @@
     <!-- 通關/失敗彈出視窗 -->
     <div id="modal-overlay" class="modal-overlay">
       <div class="modal-card">
-        <div class="modal-icon" id="modal-icon">🎉</div>
+        <img id="modal-img" src="" alt="成就獎勵" class="modal-img-reward">
         <h3 class="modal-title" id="modal-title">關卡通過！</h3>
         <div class="modal-desc" id="modal-desc">說明文字</div>
         <div id="modal-badge-container"></div>
@@ -547,15 +607,14 @@
   </div>
 
   <script>
-    // 遊戲關卡資料庫（針對國小三年級閱讀理解與金門文化設計）
+    // 遊戲關卡資料庫（包含繪製之去背 PNG 圖片）
     const gameData = [
       {
         id: 0,
         title: "第一關：瓊林村——風獅爺的怒吼",
         shortTitle: "瓊林聚落",
-        icon: "🦁",
+        image: "images/wind_lion.png",
         badgeName: "東方風靈珠 (風獅爺披風)",
-        badgeIcon: "🌪️",
         reading: {
           title: "〈穿披風的石獅子〉",
           text: "金門位在海島上，每到秋冬季節，強勁的<strong>東北季風</strong>就像野獸一樣呼呼吹來，吹得泥沙漫天，農作物也很難生長。<br><br>聰明的金門先民為了抵擋風沙、驅除凶險，便在村莊的迎風處立起威風凜凜的「<strong>風獅爺</strong>」。有的風獅爺圓圓大眼、張開大口，好像能把所有的強風與壞運氣一口吞下；有的手裡拿著寶劍、官印或是<strong>令旗</strong>。<br><br>每年到了風獅爺的誕辰，村民還會開心地幫風獅爺披上紅色的披風、拜上好吃的油炸粿，感謝祂整年默默守護村莊的平安！"
@@ -603,9 +662,8 @@
         id: 1,
         title: "第二關：水頭聚落——古厝與落番洋樓",
         shortTitle: "水頭聚落",
-        icon: "🏛️",
+        image: "images/minnan_house.png",
         badgeName: "南方磚靈珠 (紅磚燕尾積木)",
-        badgeIcon: "🧱",
         reading: {
           title: "〈屋頂上的剪刀與燕子〉",
           text: "走進金門傳統聚落，就像走進一座古老的美術館。這裡的閩南建築最吸引人的就是屋頂線條：有一種像天鵝脖子般圓潤優雅的叫做「<strong>馬背</strong>」；另一種高高揚起、分叉如剪刀尾巴的叫做「<strong>燕尾</strong>」。傳說在古代，只有中過舉人或有官職的人家，屋頂才能裝上氣派的燕尾呢！<br><br>除了一排排紅磚古厝，金門還有許多華麗的「<strong>洋樓</strong>」。這是因為以前金門土地貧瘠、生活辛苦，許多青年冒險搭船前往東南亞（南洋）打拼，這種經歷稱為「<strong>落番</strong>」。賺了錢的長輩回到故鄉蓋學校、建洋樓回饋鄉親，也為防禦海盜蓋了高高的防禦碉堡——「得月樓」！"
@@ -653,9 +711,8 @@
         id: 2,
         title: "第三關：翟山坑道——地底的花崗岩密道",
         shortTitle: "翟山坑道",
-        icon: "🛡️",
+        image: "images/zhaishan_tunnel.png",
         badgeName: "西方鋼靈珠 (砲彈鋼刀徽章)",
-        badgeIcon: "⚔️",
         reading: {
           title: "〈鬼斧神工的地下水路〉",
           text: "「滴答！滴答！」走進幽暗清涼的<strong>翟山坑道</strong>，頭頂上是堅硬無比的花崗岩石壁。你很難想像，這座宏偉的「A字型」水道，是幾十年前國軍官兵拿著簡單的鐵鎬、炸藥，一斧一鑿在岩石中敲出來的！<br><br>當時金門處在砲火連天的戰地前線，為了讓補給的小艇能在不被敵軍發現的情況下開進島內運送彈藥與糧食，軍民合力完成了這項不可思議的地下工程。如今煙硝散去，翟山坑道不再傳出砲聲，反而因為絕佳的天然回音效果，每年秋天都會舉辦浪漫迷人的「金門坑道音樂節」呢！"
@@ -703,9 +760,8 @@
         id: 3,
         title: "第四關：太武山與烈嶼——生態之友與島嶼美味",
         shortTitle: "太武山生態",
-        icon: "🐾",
+        image: "images/otter.png",
         badgeName: "北方生靈珠 (歐亞水獺守護印記)",
-        badgeIcon: "🦦",
         reading: {
           title: "〈森林小溪的神秘客與貢糖〉",
           text: "除了古蹟與戰地，金門還是台灣野生<strong>歐亞水獺</strong>最後的家園！水獺有著流線型的身軀與靈活的爪子，最喜歡在乾淨的溪流湖泊抓魚吃。由於水獺生性害羞敏感，需要最純淨自然的水域才能生存，大家開車經過路口時，如果看到「水獺出沒、減速慢行」的黃色警告牌，一定要小心慢行喔！<br><br>探險累了嗎？金門的特產更是多采多姿：香甜酥脆、古時候進貢朝廷的「<strong>貢糖</strong>」；還有用廢棄砲彈鐵材打造、無比鋒利的「<strong>金門鋼刀</strong>」；以及清甜的「<strong>一條根</strong>」茶飲。這些都是金門獨有的在地寶藏！"
@@ -753,13 +809,12 @@
 
     // 遊戲狀態機
     let currentLives = 3;
-    let unlockedLevel = 0; // 當前解鎖到第幾關
+    let unlockedLevel = 0;
     let completedLevels = [false, false, false, false];
     let currentLevelIndex = 0;
     let currentQuestionIndex = 0;
-    let modalAction = "map"; // map / retry / restart
+    let modalAction = "map";
 
-    // 初始化載入
     window.onload = function() {
       updateStatsUI();
       renderMapGrid();
@@ -818,7 +873,7 @@
         }
 
         card.innerHTML = `
-          <div class="level-icon">${lvl.icon}</div>
+          <img src="${lvl.image}" alt="${lvl.shortTitle}" class="level-card-img">
           <div class="level-info">
             <h3>${lvl.shortTitle}</h3>
             <p>${lvl.reading.title}</p>
@@ -840,6 +895,8 @@
 
       const stage = gameData[levelIdx];
       document.getElementById("stage-title").innerText = stage.title;
+      document.getElementById("stage-visual-img").src = stage.image;
+      document.getElementById("stage-visual-img").alt = stage.shortTitle;
       document.getElementById("reading-title").innerText = `📜 閱讀線索：${stage.reading.title}`;
       document.getElementById("reading-text").innerHTML = stage.reading.text;
 
@@ -880,12 +937,10 @@
       const feedback = document.getElementById("feedback-box");
       const nextBtn = document.getElementById("next-q-btn");
 
-      // 禁用所有按鈕
       const allBtns = document.querySelectorAll(".opt-btn");
       allBtns.forEach(btn => btn.disabled = true);
 
       if (selectedIdx === qData.ans) {
-        // 答對
         clickedBtn.classList.add("correct");
         feedback.className = "feedback-box correct";
         feedback.innerHTML = `<strong>🎉 答對了！</strong> ${qData.explain}`;
@@ -898,7 +953,6 @@
         }
         nextBtn.style.display = "block";
       } else {
-        // 答錯
         clickedBtn.classList.add("wrong");
         allBtns[qData.ans].classList.add("correct");
 
@@ -932,7 +986,6 @@
       if (currentQuestionIndex < stage.questions.length) {
         renderQuestion();
       } else {
-        // 關卡全部答完並通關
         completeStage();
       }
     }
@@ -947,16 +1000,16 @@
       const stage = gameData[currentLevelIndex];
       const isAllCompleted = completedLevels.every(Boolean);
 
-      const modalIcon = document.getElementById("modal-icon");
+      const modalImg = document.getElementById("modal-img");
       const modalTitle = document.getElementById("modal-title");
       const modalDesc = document.getElementById("modal-desc");
       const badgeBox = document.getElementById("modal-badge-container");
       const modalBtn = document.getElementById("modal-btn");
 
       if (isAllCompleted) {
-        modalIcon.innerText = "👑";
+        modalImg.src = "images/wind_lion.png";
         modalTitle.innerText = "🎉 傳奇達成！金門守護大英雄！";
-        modalDesc.innerHTML = "恭喜你！成功找回了四枚御風靈珠！島上的狂風已經平息，風獅爺們露出了微笑。<br>你已經徹底掌握了金門的建築、信仰、戰地與生態知識，成為優秀的文化守護者！";
+        modalDesc.innerHTML = "恭喜你！成功找回了四枚御風靈珠！島上的狂風已經平息，風獅爺與水獺們露出了微笑。<br>你已經徹底掌握了金門的建築、信仰、戰地與生態知識，成為優秀的文化守護者！";
         badgeBox.innerHTML = `
           <div class="collected-badge-preview">
             <span>✨ 獲得稱號：浯島名譽守護使者 🎖️</span>
@@ -965,12 +1018,12 @@
         modalBtn.innerText = "🌟 重新遊玩挑戰";
         modalAction = "restart";
       } else {
-        modalIcon.innerText = "🌟";
+        modalImg.src = stage.image;
         modalTitle.innerText = `恭喜通過【${stage.shortTitle}】！`;
         modalDesc.innerHTML = `你透過認真閱讀文字與思考，成功擊敗了阻礙你的考驗！`;
         badgeBox.innerHTML = `
           <div class="collected-badge-preview">
-            <span>${stage.badgeIcon} 獲得神物：${stage.badgeName}</span>
+            <span>✨ 獲得神物：${stage.badgeName}</span>
           </div>
         `;
         modalBtn.innerText = "🗺️ 前往下一關冒險";
@@ -981,13 +1034,13 @@
     }
 
     function showGameOverModal() {
-      const modalIcon = document.getElementById("modal-icon");
+      const modalImg = document.getElementById("modal-img");
       const modalTitle = document.getElementById("modal-title");
       const modalDesc = document.getElementById("modal-desc");
       const badgeBox = document.getElementById("modal-badge-container");
       const modalBtn = document.getElementById("modal-btn");
 
-      modalIcon.innerText = "😭";
+      modalImg.src = "images/wind_lion.png";
       modalTitle.innerText = "體力耗盡！";
       modalDesc.innerHTML = "小勇者的體力（金門貢糖）吃完了！別灰心，先休息一下，再重新閱讀一次文章線索吧！";
       badgeBox.innerHTML = "";
