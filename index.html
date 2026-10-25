@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>金門尋寶大冒險：風之島的秘密守護者</title>
+  <style>
+    :root {
+      --primary: #d9534f;
+      --primary-hover: #c9302c;
+      --accent: #f0ad4e;
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #2d3748;
+      --text-muted: #718096;
+      --success: #28a745;
+      --danger: #dc3545;
+      --border-radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'PingFang TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e0f2fe 0%, #fef3c7 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    #game-container {
+      width: 100%;
+      max-width: 780px;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      border: 4px solid #fbd38d;
+    }
+
+    /* 頂部狀態列 */
+    header {
+      background: #c53030;
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .title-banner {
+      font-size: 1.15rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .hearts {
+      color: #ff6b6b;
+      letter-spacing: 2px;
+      font-size: 1.25rem;
+    }
+
+    .badges-collected {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    /* 畫面主區域 */
+    .screen {
+      padding: 24px;
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 首頁開始畫面 */
+    .start-screen {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .start-hero {
+      font-size: 4.5rem;
+      margin-bottom: 12px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .game-main-title {
+      font-size: 1.85rem;
+      color: #9b2c2c;
+      margin-bottom: 10px;
+    }
+
+    .game-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .story-box {
+      background: #fffaf0;
+      border: 2px dashed #dd6b20;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: left;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      margin-bottom: 28px;
+      color: #7b341e;
+    }
+
+    /* 地圖關卡選單 */
+    .map-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .map-header h2 {
+      font-size: 1.45rem;
+      color: #742a2a;
+    }
+
+    .levels-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .levels-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .level-card {
+      border: 3px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+    }
+
+    .level-card:hover:not(.locked) {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      border-color: #dd6b20;
+    }
+
+    .level-card.locked {
+      background: #edf2f7;
+      opacity: 0.65;
+      cursor: not-allowed;
+      filter: grayscale(80%);
+    }
+
+    .level-card.completed {
+      border-color: #38a169;
+      background: #f0fff4;
+    }
+
+    .level-icon {
+      font-size: 2.4rem;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #feebc8;
+      border-radius: 50%;
+    }
+
+    .level-info h3 {
+      font-size: 1.1rem;
+      color: #2d3748;
+      margin-bottom: 4px;
+    }
+
+    .level-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .badge-tag {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #38a169;
+    }
+
+    /* 關卡閱讀短文與題目 */
+    .stage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #edf2f7;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stage-title {
+      font-size: 1.25rem;
+      color: #9b2c2c;
+      font-weight: bold;
+    }
+
+    .reading-box {
+      background: #fffdf5;
+      border-left: 5px solid #dd6b20;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .reading-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: #c05621;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .reading-text {
+      font-size: 1.02rem;
+      line-height: 1.8;
+      color: #4a5568;
+    }
+
+    .question-card {
+      background: #f7fafc;
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 16px;
+    }
+
+    .q-step {
+      font-size: 0.85rem;
+      color: #dd6b20;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .q-text {
+      font-size: 1.12rem;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: #1a202c;
+      line-height: 1.5;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .opt-btn {
+      padding: 14px 18px;
+      border: 2px solid #cbd5e0;
+      background: white;
+      border-radius: 12px;
+      font-size: 1rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #2d3748;
+    }
+
+    .opt-btn:hover:not(:disabled) {
+      background: #edf2f7;
+      border-color: #a0aec0;
+      transform: translateX(4px);
+    }
+
+    .opt-btn.correct {
+      background: #c6f6d5 !important;
+      border-color: #38a169 !important;
+      color: #22543d !important;
+      font-weight: bold;
+    }
+
+    .opt-btn.wrong {
+      background: #fed7d7 !important;
+      border-color: #e53e3e !important;
+      color: #742a2a !important;
+    }
+
+    .feedback-box {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .feedback-box.correct {
+      display: block;
+      background: #def7ec;
+      color: #03543f;
+      border-left: 4px solid #31c48d;
+    }
+
+    .feedback-box.wrong {
+      display: block;
+      background: #fde8e8;
+      color: #9b1c1c;
+      border-left: 4px solid #f98080;
+    }
+
+    /* 通用按鈕 */
+    .btn {
+      padding: 14px 28px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #e53e3e, #dd6b20);
+      color: white;
+      box-shadow: 0 4px 12px rgba(221, 107, 32, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(221, 107, 32, 0.45);
+    }
+
+    .btn-secondary {
+      background: #edf2f7;
+      color: #4a5568;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    /* 結算通關/失敗畫面 */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+      max-width: 460px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-icon {
+      font-size: 4rem;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 1.55rem;
+      color: #742a2a;
+      margin-bottom: 10px;
+    }
+
+    .modal-desc {
+      font-size: 1rem;
+      color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .collected-badge-preview {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #fefcbf;
+      border: 2px solid #ecc94b;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-weight: bold;
+      color: #744210;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <!-- 頂部狀態列 -->
+    <header>
+      <div class="title-banner">
+        <span>🦁</span> 金門尋寶大冒險
+      </div>
+      <div class="stats-bar">
+        <div>體力：<span class="hearts" id="heart-display">❤️❤️❤️</span></div>
+        <div class="badges-collected" id="badge-display">靈珠：0/4</div>
+      </div>
+    </header>
+
+    <!-- 1. 遊戲首頁開始畫面 -->
+    <div id="screen-start" class="screen active start-screen">
+      <div class="start-hero">🌪️🏛️🦁</div>
+      <h1 class="game-main-title">風之島的秘密守護者</h1>
+      <p class="game-subtitle">適合國小三年級學童自學 ✕ 閱讀理解 ✕ 在地文化探索</p>
+
+      <div class="story-box">
+        <strong>📜 冒險任務信：</strong><br>
+        親愛的小勇者！你翻開了古老的《浯島密卷》，被傳送到了被稱為「海中仙洲」的<strong>金門</strong>。<br>
+        島上的守護神器「御風靈珠」碎成了四塊散落各地，狂風四起！請透過閱讀島民留下的文化線索，通過考驗找回靈珠，平息狂風，成為真正的「金門守護小英雄」！
+      </div>
+
+      <button class="btn btn-primary" onclick="startGame()">⚔️ 出發冒險！進入島嶼地圖</button>
+    </div>
+
+    <!-- 2. 地圖選關畫面 -->
+    <div id="screen-map" class="screen">
+      <div class="map-header">
+        <h2>🗺️ 金門冒險地圖</h2>
+        <p style="color: #718096; font-size: 0.95rem; margin-top: 4px;">請依序探索四大村落與景點，解開閱讀謎題！</p>
+      </div>
+
+      <div class="levels-grid" id="levels-grid">
+        <!-- 動態產生關卡卡片 -->
+      </div>
+
+      <div style="text-align: center; margin-top: 10px;">
+        <button class="btn btn-secondary" onclick="showStoryAgain()">📖 重溫任務背景</button>
+      </div>
+    </div>
+
+    <!-- 3. 關卡閱讀與答題畫面 -->
+    <div id="screen-stage" class="screen">
+      <div class="stage-header">
+        <div class="stage-title" id="stage-title">關卡名稱</div>
+        <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.9rem;" onclick="backToMap()">↩️ 回地圖</button>
+      </div>
+
+      <!-- 閱讀短文區塊 -->
+      <div class="reading-box">
+        <div class="reading-title" id="reading-title">📜 閱讀線索</div>
+        <div class="reading-text" id="reading-text">文本內容</div>
+      </div>
+
+      <!-- 當前題目區塊 -->
+      <div class="question-card">
+        <div class="q-step" id="q-step">第 1 / 3 題</div>
+        <div class="q-text" id="q-text">問題描述</div>
+        <div class="options-list" id="options-list">
+          <!-- 選項按鈕 -->
+        </div>
+        <div class="feedback-box" id="feedback-box"></div>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="next-q-btn" style="display: none;" onclick="nextQuestion()">➡️ 下一題</button>
+    </div>
+
+    <!-- 通關/失敗彈出視窗 -->
+    <div id="modal-overlay" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-icon" id="modal-icon">🎉</div>
+        <h3 class="modal-title" id="modal-title">關卡通過！</h3>
+        <div class="modal-desc" id="modal-desc">說明文字</div>
+        <div id="modal-badge-container"></div>
+        <button class="btn btn-primary btn-block" id="modal-btn" onclick="handleModalAction()">繼續前進</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 遊戲關卡資料庫（針對國小三年級閱讀理解與金門文化設計）
+    const gameData = [
+      {
+        id: 0,
+        title: "第一關：瓊林村——風獅爺的怒吼",
+        shortTitle: "瓊林聚落",
+        icon: "🦁",
+        badgeName: "東方風靈珠 (風獅爺披風)",
+        badgeIcon: "🌪️",
+        reading: {
+          title: "〈穿披風的石獅子〉",
+          text: "金門位在海島上，每到秋冬季節，強勁的<strong>東北季風</strong>就像野獸一樣呼呼吹來，吹得泥沙漫天，農作物也很難生長。<br><br>聰明的金門先民為了抵擋風沙、驅除凶險，便在村莊的迎風處立起威風凜凜的「<strong>風獅爺</strong>」。有的風獅爺圓圓大眼、張開大口，好像能把所有的強風與壞運氣一口吞下；有的手裡拿著寶劍、官印或是<strong>令旗</strong>。<br><br>每年到了風獅爺的誕辰，村民還會開心地幫風獅爺披上紅色的披風、拜上好吃的油炸粿，感謝祂整年默默守護村莊的平安！"
+        },
+        questions: [
+          {
+            tag: "【提取訊息】",
+            q: "先民在金門村莊迎風處設立風獅爺，主要是為了抵擋什麼自然現象？",
+            options: [
+              "夏季的午後雷陣雨",
+              "秋冬強勁的東北季風",
+              "春天的濃霧與潮濕",
+              "炎熱的太陽高溫晒傷"
+            ],
+            ans: 1,
+            explain: "答對了！金門秋冬的東北季風非常強烈，因此先民設立風獅爺來鎮風止煞！"
+          },
+          {
+            tag: "【推論思考】",
+            q: "為什麼風獅爺的外型造型，常常雕刻成「大眼睛、張大嘴巴」的模樣？",
+            options: [
+              "因為祂肚子餓想吃零食",
+              "因為祂想跟路過的小朋友大聲聊天",
+              "象徵能威嚇邪煞、把強風與壞運氣一口吞掉",
+              "是雕刻師傅不小心刻壞了"
+            ],
+            ans: 2,
+            explain: "太厲害了！張大口代表把狂風一口吸盡，圓滾滾的大眼則代表能看清一切邪煞。"
+          },
+          {
+            tag: "【生活省思】",
+            q: "村民為什麼會特地幫風獅爺穿上紅披風，並送上美味的油炸粿祭拜？",
+            options: [
+              "為了參加拍照打卡比賽",
+              "怕風獅爺在外面吹風著涼",
+              "表達感謝風獅爺整年默默守護村落平安的心意",
+              "想讓風獅爺變得更時髦流行"
+            ],
+            ans: 2,
+            explain: "答得好！這代表了金門在地人懂得「飲水思源、心存感恩」的敦厚人情味。"
+          }
+        ]
+      },
+      {
+        id: 1,
+        title: "第二關：水頭聚落——古厝與落番洋樓",
+        shortTitle: "水頭聚落",
+        icon: "🏛️",
+        badgeName: "南方磚靈珠 (紅磚燕尾積木)",
+        badgeIcon: "🧱",
+        reading: {
+          title: "〈屋頂上的剪刀與燕子〉",
+          text: "走進金門傳統聚落，就像走進一座古老的美術館。這裡的閩南建築最吸引人的就是屋頂線條：有一種像天鵝脖子般圓潤優雅的叫做「<strong>馬背</strong>」；另一種高高揚起、分叉如剪刀尾巴的叫做「<strong>燕尾</strong>」。傳說在古代，只有中過舉人或有官職的人家，屋頂才能裝上氣派的燕尾呢！<br><br>除了一排排紅磚古厝，金門還有許多華麗的「<strong>洋樓</strong>」。這是因為以前金門土地貧瘠、生活辛苦，許多青年冒險搭船前往東南亞（南洋）打拼，這種經歷稱為「<strong>落番</strong>」。賺了錢的長輩回到故鄉蓋學校、建洋樓回饋鄉親，也為防禦海盜蓋了高高的防禦碉堡——「得月樓」！"
+        },
+        questions: [
+          {
+            tag: "【提取訊息】",
+            q: "金門傳統建築中，屋頂末端高高揚起、形狀像剪刀分叉的造型稱為什麼？",
+            options: [
+              "馬背",
+              "獅身",
+              "燕尾",
+              "龍頭"
+            ],
+            ans: 2,
+            explain: "沒錯！形狀像燕子尾巴的就是「燕尾脊」，在古時代表著尊貴與功名！"
+          },
+          {
+            tag: "【推論思考】",
+            q: "以前金門老一輩常說的「落番」，指的是什麼樣的生活經歷？",
+            options: [
+              "全家人搭飛機到國外度假旅遊",
+              "因為家鄉生活清苦，青年冒險搭船去南洋打拼謀生",
+              "搬家到台灣高山地區採茶農作",
+              "留在村莊裡學習當風獅爺雕刻師"
+            ],
+            ans: 1,
+            explain: "答對了！金門先民為了家人溫飽，飄洋過海到南洋艱苦奮鬥，展現了無比堅韌的毅力。"
+          },
+          {
+            tag: "【觀察細節】",
+            q: "水頭聚落著名的「得月樓」外型高聳，牆上還留有槍孔，最主要的原因是什麼？",
+            options: [
+              "為了看美麗的海邊夕陽風景",
+              "為了吸引更多觀光客參觀",
+              "為了居高臨下防禦海盜土匪的突襲，保護家族安全",
+              "為了讓燕子築巢方便"
+            ],
+            ans: 2,
+            explain: "觀察入微！早期金門常有海盜侵擾，華麗洋樓旁的得月樓就是守護全莊安全的瞭望碉堡。"
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "第三關：翟山坑道——地底的花崗岩密道",
+        shortTitle: "翟山坑道",
+        icon: "🛡️",
+        badgeName: "西方鋼靈珠 (砲彈鋼刀徽章)",
+        badgeIcon: "⚔️",
+        reading: {
+          title: "〈鬼斧神工的地下水路〉",
+          text: "「滴答！滴答！」走進幽暗清涼的<strong>翟山坑道</strong>，頭頂上是堅硬無比的花崗岩石壁。你很難想像，這座宏偉的「A字型」水道，是幾十年前國軍官兵拿著簡單的鐵鎬、炸藥，一斧一鑿在岩石中敲出來的！<br><br>當時金門處在砲火連天的戰地前線，為了讓補給的小艇能在不被敵軍發現的情況下開進島內運送彈藥與糧食，軍民合力完成了這項不可思議的地下工程。如今煙硝散去，翟山坑道不再傳出砲聲，反而因為絕佳的天然回音效果，每年秋天都會舉辦浪漫迷人的「金門坑道音樂節」呢！"
+        },
+        questions: [
+          {
+            tag: "【提取訊息】",
+            q: "翟山坑道內部特殊壯觀的「A字型」水面通道，最初建立的用途是什麼？",
+            options: [
+              "提供村民夏天划船游泳戲水",
+              "讓軍用小艇運送物資補給時避開敵方砲火",
+              "用來養殖肥美的金門石蚵海鮮",
+              "作為端午節練習划龍舟的室內場地"
+            ],
+            ans: 1,
+            explain: "答對了！這條祕密水道能保護登陸艇安全停泊卸下物資，是戰時非常關鍵的生命線！"
+          },
+          {
+            tag: "【推論字詞】",
+            q: "文章提到這項工程「鬼斧神工」，這句成語在這裡是用來形容什麼？",
+            options: [
+              "花崗岩坑道裡面常有幽靈出沒很危險",
+              "工人們使用的鐵斧頭有神奇魔力會自己動",
+              "形容開鑿堅硬花崗岩的技術非常神奇精巧、令人讚嘆佩服",
+              "坑道的岩石形狀長得像一把把斧頭"
+            ],
+            ans: 2,
+            explain: "太棒了！「鬼斧神工」形容技藝精巧非凡，好像不是凡人人力所能做成的一樣。"
+          },
+          {
+            tag: "【文化轉化】",
+            q: "現在翟山坑道不再有戰爭砲火，反而善用岩壁絕佳的回音，轉型舉辦什麼聞名世界的活動？",
+            options: [
+              "國際地下極限自行車賽",
+              "金門坑道音樂節",
+              "戰地機器人格鬥大賽",
+              "全島舞龍舞獅錦標賽"
+            ],
+            ans: 1,
+            explain: "答對了！金門坑道音樂節每年吸引許多音樂家在水面上演奏，讓戰地轉化為和平與藝術殿堂！"
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "第四關：太武山與烈嶼——生態之友與島嶼美味",
+        shortTitle: "太武山生態",
+        icon: "🐾",
+        badgeName: "北方生靈珠 (歐亞水獺守護印記)",
+        badgeIcon: "🦦",
+        reading: {
+          title: "〈森林小溪的神秘客與貢糖〉",
+          text: "除了古蹟與戰地，金門還是台灣野生<strong>歐亞水獺</strong>最後的家園！水獺有著流線型的身軀與靈活的爪子，最喜歡在乾淨的溪流湖泊抓魚吃。由於水獺生性害羞敏感，需要最純淨自然的水域才能生存，大家開車經過路口時，如果看到「水獺出沒、減速慢行」的黃色警告牌，一定要小心慢行喔！<br><br>探險累了嗎？金門的特產更是多采多姿：香甜酥脆、古時候進貢朝廷的「<strong>貢糖</strong>」；還有用廢棄砲彈鐵材打造、無比鋒利的「<strong>金門鋼刀</strong>」；以及清甜的「<strong>一條根</strong>」茶飲。這些都是金門獨有的在地寶藏！"
+        },
+        questions: [
+          {
+            tag: "【提取訊息】",
+            q: "金門是珍貴保育類「歐亞水獺」的最後家園，牠們最需要生活在什麼樣的環境？",
+            options: [
+              "乾旱炎熱的荒漠沙漠",
+              "人聲鼎沸、喧鬧吵雜的夜市",
+              "水質乾淨、沒有污染的溪流、池塘與濕地",
+              "廢棄地下坑道的深處"
+            ],
+            ans: 2,
+            explain: "沒錯！歐亞水獺是水質與環境的指標生物，乾淨的濕地生態才能讓牠們繁衍健康長大。"
+          },
+          {
+            tag: "【生活推論】",
+            q: "在金門許多馬路旁如果看見「黃底黑字、畫著水獺」的警示三角標誌，主要用意是什麼？",
+            options: [
+              "提醒小朋友可以在路邊捕捉水獺回家養",
+              "提醒駕駛人減速慢行，避免發生路殺車禍、保護水獺平安",
+              "告訴遊客水獺具有凶猛攻擊性要快逃",
+              "標示前方有水獺馬戲團正在表演"
+            ],
+            ans: 1,
+            explain: "答對了！這是為了避免水獺穿越馬路時被車輛撞傷（路殺），提醒大家一起守護珍貴動物！"
+          },
+          {
+            tag: "【綜合連結】",
+            q: "金門遠近馳名的特產「金門鋼刀」，其製作原料非常特殊，是由哪種歷史物品打造的？",
+            options: [
+              "軍用吉普車的報廢輪胎鋼絲",
+              "戰爭時期敵軍砲擊遺留下來的廢棄砲彈鋼材",
+              "沉沒在古海灣中的商船大錨",
+              "傳統閩南古厝拆除掉的廢鐵條"
+            ],
+            ans: 1,
+            explain: "全答對了！金門鐵匠將殘酷的戰爭砲彈，轉化為家家戶戶廚房實用耐磨的菜刀，象徵將戰爭化為和平生活！"
+          }
+        ]
+      }
+    ];
+
+    // 遊戲狀態機
+    let currentLives = 3;
+    let unlockedLevel = 0; // 當前解鎖到第幾關
+    let completedLevels = [false, false, false, false];
+    let currentLevelIndex = 0;
+    let currentQuestionIndex = 0;
+    let modalAction = "map"; // map / retry / restart
+
+    // 初始化載入
+    window.onload = function() {
+      updateStatsUI();
+      renderMapGrid();
+    };
+
+    function updateStatsUI() {
+      const heartEl = document.getElementById("heart-display");
+      const badgeEl = document.getElementById("badge-display");
+
+      let hearts = "";
+      for (let i = 0; i < currentLives; i++) hearts += "❤️";
+      for (let i = currentLives; i < 3; i++) hearts += "🖤";
+      heartEl.innerHTML = hearts;
+
+      const completedCount = completedLevels.filter(Boolean).length;
+      badgeEl.innerText = `靈珠：${completedCount}/4`;
+    }
+
+    function showScreen(screenId) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById(screenId).classList.add("active");
+    }
+
+    function startGame() {
+      showScreen("screen-map");
+      renderMapGrid();
+    }
+
+    function showStoryAgain() {
+      showScreen("screen-start");
+    }
+
+    function backToMap() {
+      showScreen("screen-map");
+      renderMapGrid();
+    }
+
+    function renderMapGrid() {
+      const grid = document.getElementById("levels-grid");
+      grid.innerHTML = "";
+
+      gameData.forEach((lvl, idx) => {
+        const isLocked = idx > unlockedLevel;
+        const isDone = completedLevels[idx];
+
+        const card = document.createElement("div");
+        card.className = `level-card ${isLocked ? 'locked' : ''} ${isDone ? 'completed' : ''}`;
+        
+        let statusBadge = "";
+        if (isDone) {
+          statusBadge = `<span class="badge-tag">✅ 已解鎖靈珠</span>`;
+        } else if (isLocked) {
+          statusBadge = `<span class="badge-tag" style="color: #a0aec0;">🔒 未解鎖</span>`;
+        } else {
+          statusBadge = `<span class="badge-tag" style="color: #dd6b20;">⚡ 挑戰中</span>`;
+        }
+
+        card.innerHTML = `
+          <div class="level-icon">${lvl.icon}</div>
+          <div class="level-info">
+            <h3>${lvl.shortTitle}</h3>
+            <p>${lvl.reading.title}</p>
+          </div>
+          ${statusBadge}
+        `;
+
+        if (!isLocked) {
+          card.onclick = () => startStage(idx);
+        }
+
+        grid.appendChild(card);
+      });
+    }
+
+    function startStage(levelIdx) {
+      currentLevelIndex = levelIdx;
+      currentQuestionIndex = 0;
+
+      const stage = gameData[levelIdx];
+      document.getElementById("stage-title").innerText = stage.title;
+      document.getElementById("reading-title").innerText = `📜 閱讀線索：${stage.reading.title}`;
+      document.getElementById("reading-text").innerHTML = stage.reading.text;
+
+      showScreen("screen-stage");
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const stage = gameData[currentLevelIndex];
+      const qData = stage.questions[currentQuestionIndex];
+
+      document.getElementById("q-step").innerText = `${qData.tag} 第 ${currentQuestionIndex + 1} / ${stage.questions.length} 題`;
+      document.getElementById("q-text").innerText = qData.q;
+
+      const optsContainer = document.getElementById("options-list");
+      optsContainer.innerHTML = "";
+
+      const feedback = document.getElementById("feedback-box");
+      feedback.style.display = "none";
+      feedback.className = "feedback-box";
+
+      document.getElementById("next-q-btn").style.display = "none";
+
+      const letters = ["(A)", "(B)", "(C)", "(D)"];
+
+      qData.options.forEach((optText, i) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<strong>${letters[i]}</strong> ${optText}`;
+        btn.onclick = () => handleAnswer(i, btn);
+        optsContainer.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(selectedIdx, clickedBtn) {
+      const stage = gameData[currentLevelIndex];
+      const qData = stage.questions[currentQuestionIndex];
+      const feedback = document.getElementById("feedback-box");
+      const nextBtn = document.getElementById("next-q-btn");
+
+      // 禁用所有按鈕
+      const allBtns = document.querySelectorAll(".opt-btn");
+      allBtns.forEach(btn => btn.disabled = true);
+
+      if (selectedIdx === qData.ans) {
+        // 答對
+        clickedBtn.classList.add("correct");
+        feedback.className = "feedback-box correct";
+        feedback.innerHTML = `<strong>🎉 答對了！</strong> ${qData.explain}`;
+        feedback.style.display = "block";
+
+        if (currentQuestionIndex + 1 < stage.questions.length) {
+          nextBtn.innerText = "➡️ 答對了！進入下一題";
+        } else {
+          nextBtn.innerText = "🏆 通過考驗！解鎖本關靈珠";
+        }
+        nextBtn.style.display = "block";
+      } else {
+        // 答錯
+        clickedBtn.classList.add("wrong");
+        allBtns[qData.ans].classList.add("correct");
+
+        currentLives--;
+        updateStatsUI();
+
+        feedback.className = "feedback-box wrong";
+        feedback.innerHTML = `<strong>💔 哎呀！答錯了！</strong> 扣除 1 顆體力！<br>${qData.explain}`;
+        feedback.style.display = "block";
+
+        if (currentLives <= 0) {
+          setTimeout(() => {
+            showGameOverModal();
+          }, 1200);
+          return;
+        }
+
+        if (currentQuestionIndex + 1 < stage.questions.length) {
+          nextBtn.innerText = "➡️ 繼續答下一題";
+        } else {
+          nextBtn.innerText = "🏆 通過考驗！解鎖本關靈珠";
+        }
+        nextBtn.style.display = "block";
+      }
+    }
+
+    function nextQuestion() {
+      const stage = gameData[currentLevelIndex];
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < stage.questions.length) {
+        renderQuestion();
+      } else {
+        // 關卡全部答完並通關
+        completeStage();
+      }
+    }
+
+    function completeStage() {
+      completedLevels[currentLevelIndex] = true;
+      if (currentLevelIndex + 1 > unlockedLevel && unlockedLevel < 3) {
+        unlockedLevel = currentLevelIndex + 1;
+      }
+      updateStatsUI();
+
+      const stage = gameData[currentLevelIndex];
+      const isAllCompleted = completedLevels.every(Boolean);
+
+      const modalIcon = document.getElementById("modal-icon");
+      const modalTitle = document.getElementById("modal-title");
+      const modalDesc = document.getElementById("modal-desc");
+      const badgeBox = document.getElementById("modal-badge-container");
+      const modalBtn = document.getElementById("modal-btn");
+
+      if (isAllCompleted) {
+        modalIcon.innerText = "👑";
+        modalTitle.innerText = "🎉 傳奇達成！金門守護大英雄！";
+        modalDesc.innerHTML = "恭喜你！成功找回了四枚御風靈珠！島上的狂風已經平息，風獅爺們露出了微笑。<br>你已經徹底掌握了金門的建築、信仰、戰地與生態知識，成為優秀的文化守護者！";
+        badgeBox.innerHTML = `
+          <div class="collected-badge-preview">
+            <span>✨ 獲得稱號：浯島名譽守護使者 🎖️</span>
+          </div>
+        `;
+        modalBtn.innerText = "🌟 重新遊玩挑戰";
+        modalAction = "restart";
+      } else {
+        modalIcon.innerText = "🌟";
+        modalTitle.innerText = `恭喜通過【${stage.shortTitle}】！`;
+        modalDesc.innerHTML = `你透過認真閱讀文字與思考，成功擊敗了阻礙你的考驗！`;
+        badgeBox.innerHTML = `
+          <div class="collected-badge-preview">
+            <span>${stage.badgeIcon} 獲得神物：${stage.badgeName}</span>
+          </div>
+        `;
+        modalBtn.innerText = "🗺️ 前往下一關冒險";
+        modalAction = "map";
+      }
+
+      document.getElementById("modal-overlay").classList.add("active");
+    }
+
+    function showGameOverModal() {
+      const modalIcon = document.getElementById("modal-icon");
+      const modalTitle = document.getElementById("modal-title");
+      const modalDesc = document.getElementById("modal-desc");
+      const badgeBox = document.getElementById("modal-badge-container");
+      const modalBtn = document.getElementById("modal-btn");
+
+      modalIcon.innerText = "😭";
+      modalTitle.innerText = "體力耗盡！";
+      modalDesc.innerHTML = "小勇者的體力（金門貢糖）吃完了！別灰心，先休息一下，再重新閱讀一次文章線索吧！";
+      badgeBox.innerHTML = "";
+      modalBtn.innerText = "🔄 補充體力，重新挑戰本關";
+      modalAction = "retry";
+
+      document.getElementById("modal-overlay").classList.add("active");
+    }
+
+    function handleModalAction() {
+      document.getElementById("modal-overlay").classList.remove("active");
+
+      if (modalAction === "map") {
+        backToMap();
+      } else if (modalAction === "retry") {
+        currentLives = 3;
+        updateStatsUI();
+        startStage(currentLevelIndex);
+      } else if (modalAction === "restart") {
+        currentLives = 3;
+        unlockedLevel = 0;
+        completedLevels = [false, false, false, false];
+        updateStatsUI();
+        showScreen("screen-start");
+      }
+    }
+  </script>
+</body>
+</html>
