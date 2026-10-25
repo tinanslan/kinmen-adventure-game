@@ -28,7 +28,7 @@
     }
 
     body {
-      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -42,7 +42,7 @@
       max-width: 860px;
       background: var(--card-bg);
       border-radius: var(--border-radius);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -58,7 +58,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       z-index: 10;
     }
 
@@ -198,7 +198,6 @@
       background-position: center;
     }
 
-    /* 地圖迷霧覆蓋層 */
     .map-overlay-layer {
       position: absolute;
       top: 0;
@@ -209,7 +208,6 @@
       pointer-events: none;
     }
 
-    /* 連接路線 SVG */
     .map-paths-svg {
       position: absolute;
       top: 0;
@@ -231,7 +229,6 @@
       to { stroke-dashoffset: -1000; }
     }
 
-    /* 地圖關卡據點 */
     .stage-node {
       position: absolute;
       transform: translate(-50%, -50%);
@@ -288,7 +285,6 @@
       pointer-events: none;
     }
 
-    /* 小勇者走地圖角色 */
     #hero-map-token {
       position: absolute;
       width: 58px;
@@ -312,49 +308,73 @@
       to { transform: translateY(-6px); }
     }
 
-    /* 戰鬥與題目畫面 (Battle Screen) */
+    /* ========================================================
+       🔥🔥🔥 貼身廝殺熱血戰鬥舞台 (Clash Arena) 🔥🔥🔥
+       ======================================================== */
     .battle-screen {
       padding: 16px 20px;
       position: relative;
     }
 
-    /* RPG 戰鬥舞台區 */
     .battle-arena {
-      height: 190px;
-      background: linear-gradient(180deg, #bbf2f6 0%, #fef3c7 65%, #c6f6d5 100%);
-      border-radius: 16px;
+      height: 220px;
+      background: radial-gradient(circle at center, #2d3748 0%, #1a202c 70%, #111827 100%);
+      border-radius: 18px;
       position: relative;
       overflow: hidden;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: flex-end;
-      padding: 16px 40px;
-      border: 3px solid #cbd5e0;
+      padding: 16px 20px;
+      border: 3px solid #f6ad55;
       margin-bottom: 14px;
-      box-shadow: inset 0 -10px 20px rgba(0,0,0,0.06);
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 8px 24px rgba(237, 137, 54, 0.2);
     }
 
-    /* 戰鬥角色容器 */
+    /* 戰場地面與光環 */
+    .arena-ground {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 48px;
+      background: linear-gradient(180deg, rgba(221, 107, 32, 0.3) 0%, rgba(155, 44, 44, 0.8) 100%);
+      border-top: 2px solid #ed8936;
+      box-shadow: 0 0 25px rgba(237, 137, 54, 0.4);
+    }
+
+    .combat-stage-center {
+      position: relative;
+      width: 320px;
+      height: 180px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 5;
+    }
+
+    /* 角色共用容器 */
     .combatant {
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
-      transition: all 0.2s ease;
-      z-index: 3;
+      transition: all 0.15s ease;
+      z-index: 6;
     }
 
     .combatant-img {
-      width: 105px;
-      height: 105px;
+      width: 125px;
+      height: 125px;
       object-fit: contain;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5));
     }
 
     /* 戰鬥血條與名稱 */
     .combatant-bar-box {
       width: 110px;
-      background: rgba(0,0,0,0.65);
+      background: rgba(0,0,0,0.85);
+      border: 1px solid #718096;
       border-radius: 12px;
       padding: 4px 8px;
       text-align: center;
@@ -362,7 +382,7 @@
     }
 
     .combatant-name {
-      color: white;
+      color: #f7fafc;
       font-size: 0.78rem;
       font-weight: bold;
       margin-bottom: 3px;
@@ -371,7 +391,7 @@
     .hp-track {
       width: 100%;
       height: 8px;
-      background: #4a5568;
+      background: #2d3748;
       border-radius: 6px;
       overflow: hidden;
     }
@@ -386,45 +406,134 @@
       background: #e53e3e;
     }
 
-    /* 攻擊動作動畫 */
-    .hero-attack {
-      animation: heroSlash 0.4s ease-in-out;
+    /* ⚔️ 常態貼身廝殺呼吸對峙動畫 (Idle Clash) */
+    .hero-idle-clash {
+      animation: heroClashStance 0.6s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+      transform-origin: bottom center;
     }
 
-    @keyframes heroSlash {
+    @keyframes heroClashStance {
+      0% { transform: translateX(0px) rotate(0deg); }
+      50% { transform: translateX(12px) rotate(4deg); }
+      100% { transform: translateX(25px) rotate(6deg) scale(1.04); }
+    }
+
+    .monster-idle-clash {
+      animation: monsterClashStance 0.6s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+      animation-delay: -0.3s;
+      transform-origin: bottom center;
+    }
+
+    @keyframes monsterClashStance {
+      0% { transform: translateX(0px) rotate(0deg); }
+      50% { transform: translateX(-12px) rotate(-4deg); }
+      100% { transform: translateX(-25px) rotate(-6deg) scale(1.04); }
+    }
+
+    /* 💥 兩者貼身刀刃碰撞時的交鋒火花 */
+    .clash-sparks-effect {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      transform: translate(-50%, -50%);
+      font-size: 3.2rem;
+      pointer-events: none;
+      z-index: 10;
+      animation: sparkPulse 0.3s infinite alternate;
+      filter: drop-shadow(0 0 16px #ecc94b);
+    }
+
+    @keyframes sparkPulse {
+      0% { transform: translate(-50%, -50%) scale(0.85) rotate(-10deg); opacity: 0.8; }
+      100% { transform: translate(-50%, -50%) scale(1.25) rotate(15deg); opacity: 1; }
+    }
+
+    /* 🗡️ 玩家答對：超近身瘋狂連砍攻擊動作 */
+    .hero-combo-slash {
+      animation: heroCombo 0.6s ease-in-out forwards !important;
+      z-index: 12 !important;
+    }
+
+    @keyframes heroCombo {
+      0% { transform: translateX(20px); }
+      20% { transform: translateX(70px) scale(1.2) rotate(12deg); }
+      35% { transform: translateX(85px) scale(1.25) rotate(-8deg); }
+      50% { transform: translateX(95px) scale(1.3) rotate(15deg); }
+      70% { transform: translateX(60px) scale(1.1); }
+      100% { transform: translateX(20px); }
+    }
+
+    /* 🩸 怪物受擊：劇烈重擊閃爍與被擊退 */
+    .monster-heavy-hit {
+      animation: monsterHeavyHurt 0.6s ease forwards !important;
+    }
+
+    @keyframes monsterHeavyHurt {
       0% { transform: translateX(0); }
-      50% { transform: translateX(120px) scale(1.15); }
+      20% { transform: translateX(35px) rotate(-15deg); filter: brightness(4) saturate(0) drop-shadow(0 0 25px #ff2222); }
+      40% { transform: translateX(-15px) rotate(10deg); filter: brightness(3) saturate(0.2); }
+      60% { transform: translateX(20px) rotate(-8deg); }
+      80% { transform: translateX(-5px); }
+      100% { transform: translateX(0); filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5)); }
+    }
+
+    /* 👹 玩家答錯：怪物貼身猛烈撕咬撲擊 */
+    .monster-combo-bite {
+      animation: monsterBiteCombo 0.6s ease-in-out forwards !important;
+      z-index: 12 !important;
+    }
+
+    @keyframes monsterBiteCombo {
+      0% { transform: translateX(-20px); }
+      25% { transform: translateX(-80px) scale(1.25) rotate(-12deg); }
+      50% { transform: translateX(-100px) scale(1.3) rotate(10deg); }
+      75% { transform: translateX(-60px) scale(1.1); }
+      100% { transform: translateX(-20px); }
+    }
+
+    /* 💔 玩家受擊重傷 */
+    .hero-heavy-hit {
+      animation: heroHeavyHurt 0.6s ease forwards !important;
+    }
+
+    @keyframes heroHeavyHurt {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-35px) rotate(-15deg); filter: brightness(3.5) drop-shadow(0 0 25px #ff3b3b); }
+      50% { transform: translateX(10px) rotate(8deg); }
+      75% { transform: translateX(-15px); }
       100% { transform: translateX(0); }
     }
 
-    .monster-attack {
-      animation: monsterBite 0.4s ease-in-out;
+    /* 💥 斬擊光刃線條 (Slash FX Blade) */
+    .slash-blade-line {
+      position: absolute;
+      top: 30%;
+      left: 35%;
+      width: 140px;
+      height: 8px;
+      background: linear-gradient(90deg, transparent, #fff, #ecc94b, #ff4500, transparent);
+      box-shadow: 0 0 20px #ecc94b;
+      transform: rotate(-35deg);
+      pointer-events: none;
+      z-index: 20;
+      animation: slashBladeSweep 0.25s ease-out forwards;
     }
 
-    @keyframes monsterBite {
-      0% { transform: translateX(0); }
-      50% { transform: translateX(-120px) scale(1.15); }
-      100% { transform: translateX(0); }
+    @keyframes slashBladeSweep {
+      0% { opacity: 0; transform: scaleX(0.2) rotate(-35deg); }
+      50% { opacity: 1; transform: scaleX(1.4) rotate(-35deg); }
+      100% { opacity: 0; transform: scaleX(1.8) translateY(20px) rotate(-35deg); }
     }
 
-    .monster-hit {
-      animation: monsterHurt 0.5s ease;
-    }
-
-    @keyframes monsterHurt {
-      0%, 100% { filter: drop-shadow(0 0 0 transparent); }
-      20%, 60% { filter: brightness(3) saturate(0.2) drop-shadow(0 0 20px #ff3838); transform: translateX(10px); }
-      40%, 80% { transform: translateX(-10px); }
-    }
-
+    /* 怪物滅亡消散 */
     .monster-die {
-      animation: monsterFaint 0.8s forwards;
+      animation: monsterFaint 0.8s forwards !important;
     }
 
     @keyframes monsterFaint {
       0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3) rotate(20deg); filter: brightness(4); opacity: 0.8; }
-      100% { transform: scale(0.2) translateY(50px); opacity: 0; }
+      40% { transform: scale(1.35) rotate(25deg); filter: brightness(4); opacity: 0.8; }
+      100% { transform: scale(0.1) translateY(80px) rotate(90deg); opacity: 0; }
     }
 
     /* 聲光效果覆蓋層 */
@@ -435,18 +544,18 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 20;
+      z-index: 25;
     }
 
     .screen-shake {
-      animation: shake 0.35s cubic-bezier(.36,.07,.19,.97) both;
+      animation: heavyShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
     }
 
-    @keyframes shake {
-      10%, 90% { transform: translate3d(-3px, 0, 0); }
-      20%, 80% { transform: translate3d(5px, 0, 0); }
-      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-      40%, 60% { transform: translate3d(6px, 0, 0); }
+    @keyframes heavyShake {
+      10%, 90% { transform: translate3d(-6px, 0, 0); }
+      20%, 80% { transform: translate3d(8px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-9px, 0, 0); }
+      40%, 60% { transform: translate3d(9px, 0, 0); }
     }
 
     .screen-flash-red {
@@ -454,26 +563,25 @@
     }
 
     @keyframes flashRed {
-      0% { background: rgba(229, 62, 62, 0.4); }
+      0% { background: rgba(229, 62, 62, 0.45); }
       100% { background: transparent; }
     }
 
-    /* 飄字傷害特效 (Floating Damage Text) */
     .dmg-popup {
       position: absolute;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 900;
-      color: #ff3838;
-      text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 8px rgba(0,0,0,0.4);
+      color: #ff2a2a;
+      text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 10px rgba(0,0,0,0.5);
       pointer-events: none;
-      animation: floatUpFade 0.8s ease-out forwards;
-      z-index: 30;
+      animation: floatUpFade 0.85s ease-out forwards;
+      z-index: 35;
     }
 
     @keyframes floatUpFade {
-      0% { transform: translateY(0) scale(0.8); opacity: 0; }
-      30% { transform: translateY(-20px) scale(1.3); opacity: 1; }
-      100% { transform: translateY(-55px) scale(1); opacity: 0; }
+      0% { transform: translateY(0) scale(0.7); opacity: 0; }
+      25% { transform: translateY(-25px) scale(1.4); opacity: 1; }
+      100% { transform: translateY(-65px) scale(1.05); opacity: 0; }
     }
 
     /* 閱讀理解折疊卡 */
@@ -726,7 +834,7 @@
       <div class="story-box">
         <strong>📜 冒險任務信：</strong><br>
         親愛的小勇者！你翻開了古老的《浯島密卷》，被傳送到了被稱為「海中仙洲」的<strong>金門</strong>。<br>
-        島上的守護神器「御風靈珠」碎成四塊散落各地，狂風與怪物四處作亂！請在金門冒險大地圖上移動探索，透過認真閱讀線索答題擊潰怪物，找回靈珠平息狂風！
+        島上的守護神器「御風靈珠」碎成四塊散落各地，狂風與妖怪四處作亂！請在金門冒險大地圖上移動探索，透過認真閱讀線索答題擊潰怪物，找回靈珠平息狂風！
       </div>
 
       <button class="btn btn-primary" onclick="initAudioAndStart()">⚔️ 出發！進入金門冒險大地圖</button>
@@ -782,30 +890,38 @@
       </div>
     </div>
 
-    <!-- 3. RPG 戰鬥與閱讀答題畫面 (Battle Screen) -->
+    <!-- 3. RPG 貼身廝殺戰鬥與題目畫面 (Battle Screen) -->
     <div id="screen-battle" class="screen battle-screen">
       <!-- 戰鬥舞台區 -->
       <div class="battle-arena" id="battle-arena">
-        <!-- 玩家小勇者 -->
-        <div class="combatant" id="hero-combatant">
-          <div class="combatant-bar-box">
-            <div class="combatant-name">小勇者 (玩家)</div>
-            <div class="hp-track">
-              <div class="hp-fill" id="player-hp-bar" style="width: 100%;"></div>
-            </div>
-          </div>
-          <img src="images/hero.png" alt="勇者" class="combatant-img" id="hero-combat-img">
-        </div>
+        <div class="arena-ground"></div>
 
-        <!-- 關卡怪物 (答對扣怪血量) -->
-        <div class="combatant" id="monster-combatant">
-          <div class="combatant-bar-box">
-            <div class="combatant-name" id="monster-name">風沙怪</div>
-            <div class="hp-track">
-              <div class="hp-fill danger" id="monster-hp-bar" style="width: 100%;"></div>
+        <!-- 戰鬥中央核心對峙區 (兩人貼身超近距離) -->
+        <div class="combat-stage-center">
+          <!-- 刀刃激戰火花 -->
+          <div class="clash-sparks-effect" id="clash-sparks">⚔️</div>
+
+          <!-- 玩家小勇者 (貼身交鋒) -->
+          <div class="combatant hero-idle-clash" id="hero-combatant">
+            <div class="combatant-bar-box">
+              <div class="combatant-name">小勇者 (玩家)</div>
+              <div class="hp-track">
+                <div class="hp-fill" id="player-hp-bar" style="width: 100%;"></div>
+              </div>
             </div>
+            <img src="images/hero.png" alt="勇者" class="combatant-img" id="hero-combat-img">
           </div>
-          <img src="images/wind_lion.png" alt="怪物" class="combatant-img" id="monster-combat-img">
+
+          <!-- 關卡妖怪 (貼身交鋒) -->
+          <div class="combatant monster-idle-clash" id="monster-combatant">
+            <div class="combatant-bar-box">
+              <div class="combatant-name" id="monster-name">風沙怪</div>
+              <div class="hp-track">
+                <div class="hp-fill danger" id="monster-hp-bar" style="width: 100%;"></div>
+              </div>
+            </div>
+            <img src="images/wind_lion.png" alt="怪物" class="combatant-img" id="monster-combat-img">
+          </div>
         </div>
       </div>
 
@@ -847,7 +963,7 @@
   </div>
 
   <script>
-    // Web Audio API 音效生成器 (無須載入外部 MP3，零延遲)
+    // Web Audio API 音效生成器 (多重連擊音效合成)
     const SoundFX = {
       ctx: null,
       init() {
@@ -859,55 +975,57 @@
           this.ctx.resume();
         }
       },
-      // 揮劍砍擊音效
-      slash() {
+      // 快速連續刀劍狂砍音效
+      comboSlash() {
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(600, now);
-        osc.frequency.exponentialRampToValueAtTime(100, now + 0.18);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.18);
+        [0, 0.12, 0.24].forEach((offset, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(800 - idx * 100, now + offset);
+          osc.frequency.exponentialRampToValueAtTime(150, now + offset + 0.15);
+          gain.gain.setValueAtTime(0.35, now + offset);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + offset + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + offset);
+          osc.stop(now + offset + 0.15);
+        });
       },
-      // 爆擊命中怪物音效
-      hit() {
+      // 猛烈爆擊音效
+      heavyHit() {
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(180, now);
-        osc.frequency.exponentialRampToValueAtTime(40, now + 0.25);
-        gain.gain.setValueAtTime(0.4, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.35);
+        gain.gain.setValueAtTime(0.6, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.25);
+        osc.stop(now + 0.35);
       },
-      // 玩家答錯受傷音效
-      hurt() {
+      // 妖怪猛烈撕咬撲擊音效
+      monsterRoarBite() {
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(120, now);
-        osc.frequency.exponentialRampToValueAtTime(50, now + 0.3);
-        gain.gain.setValueAtTime(0.3, now);
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.linearRampToValueAtTime(80, now + 0.3);
+        gain.gain.setValueAtTime(0.5, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
         osc.stop(now + 0.3);
       },
-      // 怪物擊敗消散音效
+      // 怪物消散音效
       monsterDefeated() {
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
@@ -924,11 +1042,11 @@
           osc.stop(now + idx * 0.08 + 0.2);
         });
       },
-      // 通關勝利號角音效
+      // 勝利號角音效
       victory() {
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-        const notes = [261.6, 329.6, 392.0, 523.3]; // C E G C
+        const notes = [261.6, 329.6, 392.0, 523.3];
         notes.forEach((freq, i) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
@@ -1148,7 +1266,6 @@
       }
     ];
 
-    // 遊戲狀態機
     let currentLives = 3;
     let unlockedLevel = 0;
     let completedLevels = [false, false, false, false];
@@ -1156,7 +1273,6 @@
     let currentQuestionIndex = 0;
     let modalAction = "map";
 
-    // 初始化
     window.onload = function() {
       updateStatsUI();
       updateMapNodes();
@@ -1189,7 +1305,6 @@
       const completedCount = completedLevels.filter(Boolean).length;
       badgeEl.innerText = `靈珠：${completedCount}/4`;
 
-      // 玩家戰鬥血條
       const playerHpBar = document.getElementById("player-hp-bar");
       if (playerHpBar) {
         playerHpBar.style.width = `${(currentLives / 3) * 100}%`;
@@ -1209,10 +1324,9 @@
       });
     }
 
-    // 玩家在地圖上走向關卡據點
     function walkToStage(levelIdx) {
       if (levelIdx > unlockedLevel) {
-        SoundFX.hurt();
+        SoundFX.monsterRoarBite();
         return;
       }
 
@@ -1223,7 +1337,6 @@
       heroToken.style.left = targetPos.left;
       heroToken.style.top = targetPos.top;
 
-      // 走動延遲後進入戰鬥舞台
       setTimeout(() => {
         startBattle(levelIdx);
       }, 750);
@@ -1236,14 +1349,21 @@
       const stage = gameData[levelIdx];
       document.getElementById("monster-name").innerText = stage.monsterName;
       document.getElementById("monster-combat-img").src = stage.monsterImage;
-      document.getElementById("reading-badge-title").innerHTML = `📜 閱讀情報：${stage.reading.title}`;
+      document.getElementById("reading-badge-title").innerHTML = `📜 戰鬥情報：${stage.reading.title}`;
       document.getElementById("reading-content-body").innerHTML = stage.reading.text;
 
-      // 重設怪物造型與血量
+      // 重設廝殺待機狀態
+      const heroBox = document.getElementById("hero-combatant");
+      const monsterBox = document.getElementById("monster-combatant");
       const monsterImg = document.getElementById("monster-combat-img");
-      monsterImg.className = "combatant-img";
-      updateMonsterHp();
 
+      heroBox.className = "combatant hero-idle-clash";
+      monsterBox.className = "combatant monster-idle-clash";
+      monsterImg.className = "combatant-img";
+
+      document.getElementById("clash-sparks").style.display = "block";
+
+      updateMonsterHp();
       showScreen("screen-battle");
       renderQuestion();
     }
@@ -1297,13 +1417,21 @@
     function triggerScreenShake() {
       const container = document.getElementById("game-container");
       container.classList.add("screen-shake");
-      setTimeout(() => container.classList.remove("screen-shake"), 350);
+      setTimeout(() => container.classList.remove("screen-shake"), 400);
     }
 
     function triggerScreenFlash() {
       const fx = document.getElementById("fx-overlay");
       fx.classList.add("screen-flash-red");
       setTimeout(() => fx.classList.remove("screen-flash-red"), 400);
+    }
+
+    function spawnSlashBlade() {
+      const arena = document.getElementById("battle-arena");
+      const blade = document.createElement("div");
+      blade.className = "slash-blade-line";
+      arena.appendChild(blade);
+      setTimeout(() => blade.remove(), 260);
     }
 
     function createDamagePopup(text, isMonster) {
@@ -1315,12 +1443,13 @@
       popup.className = "dmg-popup";
       popup.innerText = text;
       popup.style.left = `${rect.left - containerRect.left + 20}px`;
-      popup.style.top = `${rect.top - containerRect.top + 10}px`;
+      popup.style.top = `${rect.top - containerRect.top}px`;
 
       document.getElementById("game-container").appendChild(popup);
-      setTimeout(() => popup.remove(), 800);
+      setTimeout(() => popup.remove(), 850);
     }
 
+    // 處理答題（觸發貼身狂砍廝殺）
     function handleAnswer(selectedIdx, clickedBtn) {
       const stage = gameData[currentLevelIndex];
       const qData = stage.questions[currentQuestionIndex];
@@ -1330,23 +1459,25 @@
       const allBtns = document.querySelectorAll(".opt-btn");
       allBtns.forEach(btn => btn.disabled = true);
 
+      const heroBox = document.getElementById("hero-combatant");
+      const monsterBox = document.getElementById("monster-combatant");
+      const monsterImg = document.getElementById("monster-combat-img");
+
       if (selectedIdx === qData.ans) {
-        // 玩家答對：勇者突進砍怪！
+        // 🔥 玩家答對：勇者貼身瘋狂連砍攻擊！
         clickedBtn.classList.add("correct");
 
-        // 聲光效果
-        SoundFX.slash();
-        const heroImg = document.getElementById("hero-combat-img");
-        const monsterImg = document.getElementById("monster-combat-img");
+        // 音效與突進連砍
+        SoundFX.comboSlash();
+        spawnSlashBlade();
+        heroBox.classList.add("hero-combo-slash");
 
-        heroImg.classList.add("hero-attack");
         setTimeout(() => {
-          heroImg.classList.remove("hero-attack");
-          SoundFX.hit();
+          SoundFX.heavyHit();
           triggerScreenShake();
-          monsterImg.classList.add("monster-hit");
-          createDamagePopup("💥 暴擊 -100 HP", true);
-          setTimeout(() => monsterImg.classList.remove("monster-hit"), 500);
+          spawnSlashBlade();
+          monsterBox.classList.add("monster-heavy-hit");
+          createDamagePopup("💥 暴擊斬 -150 HP", true);
 
           // 扣除怪物血量
           const remaining = stage.questions.length - (currentQuestionIndex + 1);
@@ -1356,36 +1487,41 @@
           if (remaining === 0) {
             setTimeout(() => {
               SoundFX.monsterDefeated();
+              document.getElementById("clash-sparks").style.display = "none";
               monsterImg.classList.add("monster-die");
             }, 300);
           }
-        }, 200);
+        }, 220);
+
+        setTimeout(() => {
+          heroBox.classList.remove("hero-combo-slash");
+          monsterBox.classList.remove("monster-heavy-hit");
+        }, 650);
 
         feedback.className = "feedback-box correct";
-        feedback.innerHTML = `<strong>🎉 命中弱點！答對了！</strong> ${qData.explain}`;
+        feedback.innerHTML = `<strong>🎉 致命一擊！答對了！</strong> ${qData.explain}`;
         feedback.style.display = "block";
 
         if (currentQuestionIndex + 1 < stage.questions.length) {
-          nextBtn.innerText = "⚔️ 擊中怪物！進入下一回合";
+          nextBtn.innerText = "⚔️ 壓制怪物！繼續貼身追擊";
         } else {
-          nextBtn.innerText = "🏆 怪物消滅！解鎖本區御風靈珠";
+          nextBtn.innerText = "🏆 斬殺妖怪！解鎖本區御風靈珠";
         }
         nextBtn.style.display = "block";
       } else {
-        // 玩家答錯：怪物反擊！
+        // 🔥 玩家答錯：妖怪貼身猛烈撕咬！
         clickedBtn.classList.add("wrong");
         allBtns[qData.ans].classList.add("correct");
 
-        const monsterImg = document.getElementById("monster-combat-img");
-        const heroImg = document.getElementById("hero-combat-img");
+        SoundFX.monsterRoarBite();
+        monsterBox.classList.add("monster-combo-bite");
 
-        monsterImg.classList.add("monster-attack");
         setTimeout(() => {
-          monsterImg.classList.remove("monster-attack");
-          SoundFX.hurt();
+          SoundFX.heavyHit();
           triggerScreenShake();
           triggerScreenFlash();
-          createDamagePopup("💔 玩家受傷 -1", false);
+          heroBox.classList.add("hero-heavy-hit");
+          createDamagePopup("💔 重傷 -1 體力", false);
 
           currentLives--;
           updateStatsUI();
@@ -1394,16 +1530,21 @@
             setTimeout(() => showGameOverModal(), 800);
             return;
           }
-        }, 200);
+        }, 220);
+
+        setTimeout(() => {
+          monsterBox.classList.remove("monster-combo-bite");
+          heroBox.classList.remove("hero-heavy-hit");
+        }, 650);
 
         feedback.className = "feedback-box wrong";
-        feedback.innerHTML = `<strong>哎呀！被怪物反擊了！</strong> 體力扣除 1 顆！<br>${qData.explain}`;
+        feedback.innerHTML = `<strong>哎呀！被妖怪貼身反噬！</strong> 體力扣除 1 顆！<br>${qData.explain}`;
         feedback.style.display = "block";
 
         if (currentQuestionIndex + 1 < stage.questions.length) {
-          nextBtn.innerText = "🛡️ 重新整隊！繼續迎戰下一回合";
+          nextBtn.innerText = "🛡️ 奮力掙脫！重新迎戰下一刀";
         } else {
-          nextBtn.innerText = "🏆 堅持到底！解鎖本區御風靈珠";
+          nextBtn.innerText = "🏆 決一死戰！解鎖本區御風靈珠";
         }
         nextBtn.style.display = "block";
       }
@@ -1441,7 +1582,7 @@
       if (isAllCompleted) {
         modalImg.src = "images/hero.png";
         modalTitle.innerText = "👑 傳奇達成！金門守護大英雄！";
-        modalDesc.innerHTML = "恭喜你！成功擊潰所有作亂的怪物，找回了四枚御風靈珠！<br>島上的狂風已經平息，風獅爺們露出了欣慰的微笑。<br>你已經徹底掌握了金門的建築、信仰、戰地與生態知識！";
+        modalDesc.innerHTML = "恭喜你！成功擊潰所有作亂的妖怪，找回了四枚御風靈珠！<br>島上的狂風已經平息，風獅爺們露出了欣慰的微笑。<br>你已經徹底掌握了金門的建築、信仰、戰地與生態知識！";
         badgeBox.innerHTML = `
           <div class="collected-badge-preview">
             <span>✨ 獲得封號：浯島名譽守護使者 🎖️</span>
@@ -1452,7 +1593,7 @@
       } else {
         modalImg.src = stage.monsterImage;
         modalTitle.innerText = `戰勝【${stage.monsterName}】！`;
-        modalDesc.innerHTML = `小勇者透過智慧與閱讀，成功擊破了怪物的阻礙，平息了該區域的風暴！`;
+        modalDesc.innerHTML = `小勇者透過智慧與閱讀，在激烈的廝殺中成功擊退了妖怪！`;
         badgeBox.innerHTML = `
           <div class="collected-badge-preview">
             <span>✨ 獲得神器：${stage.badgeName}</span>
@@ -1476,7 +1617,7 @@
       modalTitle.innerText = "體力耗盡！";
       modalDesc.innerHTML = "小勇者的體力（金門貢糖）吃完了！別灰心，先休息一下，重新研讀戰鬥情報吧！";
       badgeBox.innerHTML = "";
-      modalBtn.innerText = "🔄 補充體力，重新挑戰本關怪物";
+      modalBtn.innerText = "🔄 補充體力，重新挑戰本關妖怪";
       modalAction = "retry";
 
       document.getElementById("modal-overlay").classList.add("active");
